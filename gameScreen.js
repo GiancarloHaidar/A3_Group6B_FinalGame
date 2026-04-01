@@ -126,6 +126,10 @@ function initGame() {
   winAnimTimer = 0;
   _playerHasMoved = false;
 
+  // ── Clear all input state to prevent stuck keys ─────────
+  _keys = { left: false, right: false, down: false };
+  _inputQueue = [];
+
   // ── Read optional level settings from JSON ───────────────
   _lvGravityMult = levelData.gravityMultiplier || 1.0;
   _lvJumpForceMult = levelData.jumpForceMultiplier || 1.0;
@@ -157,9 +161,6 @@ function initGame() {
   }
 
   player = new Player(levelData.startX, levelData.startY);
-
-  // Clear any queued input from a previous run.
-  _inputQueue = [];
 
   // Pass level multipliers to player so it can apply them each frame.
   player.gravityMult = _lvGravityMult;
