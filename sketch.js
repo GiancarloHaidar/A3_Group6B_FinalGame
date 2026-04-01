@@ -79,8 +79,25 @@ function preload() {
   failSound = loadSound("Assets/Fail.mp3");
   winSound = loadSound("Assets/Win.mp3");
   speakingSound = loadSound("Assets/Speaking.mp3");
-  imgFlag = loadImage("Assets/flag.png");
   bgMusic2 = loadSound("Assets/Background2.mp3");
+
+  // All images loaded in preload to guarantee availability
+  imgHouse = loadImage("Assets/house.png");
+  imgTree = loadImage("Assets/tree.png");
+  imgAstronaut = loadImage("Assets/astronaut.png");
+  imgGround = loadImage("Assets/ground.png");
+  imgGroundL2 = loadImage("Assets/cloud_platform1.png");
+  imgGroundL3 = loadImage("Assets/mars_platform.png");
+  imgFlag = loadImage("Assets/flag.png");
+  imgCloud1 = loadImage("Assets/Cloud1.png");
+  imgCloud2 = loadImage("Assets/Cloud2.png");
+  imgEarth = loadImage("Assets/earth.png");
+  imgSaturn = loadImage("Assets/saturn.png");
+  imgVenus = loadImage("Assets/venus.png");
+  imgMercury = loadImage("Assets/mercury.png");
+  imgShootingStar = loadImage("Assets/shooting_star.png");
+  imgAsteroid = loadImage("Assets/astroid.png");
+  imgSpaceship = loadImage("Assets/spaceship.png");
 }
 
 // ── Level helpers ─────────────────────────────────────────────
@@ -344,19 +361,6 @@ function _playLevel3Video() {
   _introVideo.style.objectFit = "contain";
   _introVideo.style.zIndex = "10";
 
-  const EARLY_BY_L3 = 2.0;
-  let _btnShown = false;
-
-  _introVideo.addEventListener("timeupdate", function _checkEarlyL3() {
-    if (_btnShown) return;
-    const remaining = _introVideo.duration - _introVideo.currentTime;
-    if (remaining <= EARLY_BY_L3) {
-      _btnShown = true;
-      _introVideo.removeEventListener("timeupdate", _checkEarlyL3);
-      _onLevel3VideoEnded();
-    }
-  });
-
   _introVideo.addEventListener("ended", _onLevel3VideoEnded, { once: true });
 
   _introVideo.play().catch(() => {
@@ -365,8 +369,9 @@ function _playLevel3Video() {
   });
 
   if (speakingSound && speakingSound.isLoaded()) speakingSound.play();
-  if (bgMusic && bgMusic.isPlaying()) bgMusic.stop();
-  if (bgMusic2 && bgMusic2.isLoaded() && !bgMusic2.isPlaying()) bgMusic2.loop();
+  // Level 3 uses Level 1 music
+  if (bgMusic2 && bgMusic2.isPlaying()) bgMusic2.stop();
+  if (bgMusic && bgMusic.isLoaded() && !bgMusic.isPlaying()) bgMusic.loop();
 }
 
 function _onLevel3VideoEnded() {
@@ -393,7 +398,8 @@ function _onLevel3VideoContinued() {
   initGame();
   _initBlur();
   if (speakingSound && speakingSound.isPlaying()) speakingSound.stop();
-  if (bgMusic && bgMusic.isPlaying()) bgMusic.stop();
+  // _syncMusic starts both bgMusic + bgMusic2 for Level 3
+  _syncMusic();
 }
 
 // ── Final closing clip (after Level 3 win) ────────────────────
@@ -413,7 +419,7 @@ function _playFinalClip() {
   backdrop.style.display = "block";
 
   _introVideo = document.getElementById("introVideo");
-  _introVideo.src = "Assets/FinalClip.mp4";
+  _introVideo.src = "Assets/final_closing_clip__after_level_3_.mp4";
   _introVideo.muted = true;
 
   _introVideo.style.display = "block";
@@ -432,6 +438,19 @@ function _playFinalClip() {
     console.warn("Final clip play() failed — restarting game.");
     _onFinalClipEnded();
   });
+
+  // Play Speaking.mp3 for 3 seconds at the start of the clip
+  if (speakingSound && speakingSound.isLoaded()) {
+    speakingSound.play();
+    setTimeout(function () {
+      if (speakingSound.isPlaying()) speakingSound.stop();
+    }, 3000);
+  }
+
+  // Start Level 1 music in the background
+  if (bgMusic && bgMusic.isLoaded() && !bgMusic.isPlaying()) {
+    bgMusic.loop();
+  }
 }
 
 function _onFinalClipEnded() {
@@ -443,16 +462,34 @@ function _onFinalClipEnded() {
   let backdrop = document.getElementById("videoBackdrop");
   if (backdrop) backdrop.style.display = "none";
 
-  // Auto-restart from Level 1
+  // Full game reset — back to "Click to Start" screen
+  _stopMusic();
   _totalStars = 0;
   _starAwardedThisWin = false;
   _winMusicStopped = false;
   _loseMusicStopped = false;
+  window._introStarted = false;
   _loadLevel(1);
-  currentScreen = "game";
+  currentScreen = "intro";
   initGame();
   _initBlur();
-  _syncMusic();
+
+  // Show the "Click to Start" overlay again
+  const overlay = document.getElementById("startOverlay");
+  if (overlay) {
+    overlay.style.display = "flex";
+    overlay.addEventListener(
+      "click",
+      function () {
+        overlay.style.display = "none";
+        if (typeof _startIntro === "function") {
+          window._introStarted = false;
+          _startIntro();
+        }
+      },
+      { once: true },
+    );
+  }
 }
 
 // ── Blur helpers ──────────────────────────────────────────────
@@ -586,35 +623,20 @@ function setup() {
   failSound.setVolume(0.6);
   winSound.setVolume(0.6);
 
-  imgHouse = loadImage("Assets/house.png");
-  imgTree = loadImage("Assets/tree.png");
-  imgAstronaut = loadImage("Assets/astronaut.png");
-  imgGround = loadImage("Assets/ground.png");
-  imgGroundL2 = loadImage("Assets/cloud_platform1.png");
-  imgGroundL3 = loadImage("Assets/mars_platform.png");
-  imgCloud1 = loadImage("Assets/Cloud1.png");
-  imgCloud2 = loadImage("Assets/Cloud2.png");
-  imgEarth = loadImage("Assets/earth.png");
-  imgSaturn = loadImage("Assets/saturn.png");
-  imgVenus = loadImage("Assets/venus.png");
-  imgMercury = loadImage("Assets/mercury.png");
-  imgShootingStar = loadImage("Assets/shooting_star.png");
-  imgAsteroid = loadImage("Assets/astroid.png");
-  imgSpaceship = loadImage("Assets/spaceship.png");
-
   _startIntro();
 }
 
 // ── Music helpers ─────────────────────────────────────────────
-// Call after any level change or screen transition.
-// Starts the correct track for the current level and stops the other.
-// Level 3 shares bgMusic2 with Level 2.
+// Level 1 & 3: bgMusic. Level 2: bgMusic2.
 function _syncMusic() {
-  let useSpaceTrack = currentLevel === 2 || currentLevel === 3;
-  let activeTrack = useSpaceTrack ? bgMusic2 : bgMusic;
-  let inactiveTrack = useSpaceTrack ? bgMusic : bgMusic2;
-  if (inactiveTrack.isPlaying()) inactiveTrack.stop();
-  if (!activeTrack.isPlaying()) activeTrack.loop();
+  if (currentLevel === 2) {
+    if (bgMusic.isPlaying()) bgMusic.stop();
+    if (!bgMusic2.isPlaying()) bgMusic2.loop();
+  } else {
+    // Level 1 and Level 3 both use bgMusic
+    if (bgMusic2.isPlaying()) bgMusic2.stop();
+    if (!bgMusic.isPlaying()) bgMusic.loop();
+  }
 }
 
 // Stop whichever track is currently playing (used on win / lose).
@@ -869,6 +891,12 @@ function keyPressed() {
       _stopMusic();
       if (currentLevel === 1) _playLevel2Video();
       else if (currentLevel === 2) _playLevel3Video();
+      else if (currentLevel === 3) {
+        _totalStars++;
+        _starAwardedThisWin = true;
+        _playFinalClip();
+        currentScreen = "finalclip";
+      }
     }
   }
 

@@ -390,10 +390,10 @@ function _drawSidePanels(ox) {
   let t = 1 - constrain(camMidY / LEVEL_HEIGHT, 0, 1);
   let r, gVal, b;
   if (currentLevel === 3) {
-    // Match column background: #00092c at ground → black in deep space
-    r = lerp(0, 0, t);
-    gVal = lerp(0, 9, t);
-    b = lerp(0, 44, t);
+    // Match column: #00092c at ground (t≈0) → black at top (t=1)
+    r = 0;
+    gVal = lerp(9, 0, t);
+    b = lerp(44, 0, t);
   } else if (currentLevel === 2) {
     r = lerp(30, 5, t);
     gVal = lerp(35, 8, t);
@@ -703,10 +703,10 @@ function _drawColumnBackground(g) {
     let r, gVal, b;
 
     if (currentLevel === 3) {
-      // #00092c (0,9,44) at ground → pitch black at top (deep space)
-      r = round(lerp(0, 0, t));
-      gVal = round(lerp(0, 9, t));
-      b = round(lerp(0, 44, t));
+      // #00092c at ground (bottom, t≈0) → pitch black at top (t=1)
+      r = 0;
+      gVal = round(lerp(9, 0, t));
+      b = round(lerp(44, 0, t));
     } else if (currentLevel === 2) {
       r = round(lerp(10, 0, t));
       gVal = round(lerp(20, 0, t));
@@ -749,12 +749,22 @@ function _drawPlatforms(g) {
   const gp = platforms.find((p) => p.zone === "ground");
   if (gp) {
     if (currentLevel === 3 && imgGroundL3) {
-      // ── Level 3 Mars ground ──
-      const L3_X = gp.x;
-      const L3_Y = gp.y - 200;
+      // ── Level 3 Mars ground — draw base color rect + terrain overlay ──
+      // Draw a Mars-colored base rect so something is always visible
+      g.fill(100, 40, 15);
+      g.noStroke();
+      g.rect(gp.x, gp.y, gp.w, gp.h);
+      // Overlay the mars_platform.png terrain image on top
+      const L3_X = gp.x - 50;
+      const L3_Y = gp.y - 500;
       const L3_WIDTH = 900;
-      const L3_HEIGHT = 400;
+      const L3_HEIGHT = 700;
       g.image(imgGroundL3, L3_X, L3_Y, L3_WIDTH, L3_HEIGHT);
+    } else if (currentLevel === 3) {
+      // Fallback if image somehow failed to load
+      g.fill(100, 40, 15);
+      g.noStroke();
+      g.rect(gp.x, gp.y, gp.w, gp.h);
     } else if (currentLevel === 2 && imgGroundL2) {
       // ── Level 2 cloud ground ──
       const L2_X = gp.x;

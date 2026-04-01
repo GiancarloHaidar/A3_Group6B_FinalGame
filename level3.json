@@ -3,217 +3,107 @@
   "startY": 3900,
   "finishY": 275,
   "gravityMultiplier": 1.3,
-  "jumpForceMultiplier": 1.2,
-  "balanceMultiplier": 0.8,
+  "jumpForceMultiplier": 1.4,
+  "balanceMultiplier": 0.5,
   "colorBlindnessStrength": 0.45,
   "platformContrastReduction": 0.35,
-  "energyDrainMultiplier": 0.75,
+  "energyDrainMultiplier": 0.5,
   "platforms": [
-    {
-      "x": 0, "y": 3950, "w": 800, "h": 50,
-      "color": [140, 60, 30],
-      "zone": "ground", "section": "ground"
-    },
-    {
-      "x": 290, "y": 3840, "w": 200, "h": 18,
-      "color": [130, 65, 40],
-      "zone": "MarsSurface", "section": "MarsSurface", "laneKey": "C"
-    },
-    {
-      "x": 130, "y": 3735, "w": 190, "h": 18,
-      "color": [125, 60, 38],
-      "zone": "MarsSurface", "section": "MarsSurface", "laneKey": "L"
-    },
-    {
-      "x": 420, "y": 3630, "w": 195, "h": 18,
-      "color": [118, 55, 35],
-      "zone": "MarsSurface", "section": "MarsSurface", "laneKey": "R",
-      "moving": true, "moveRange": 40, "moveSpeed": 0.005
-    },
-    {
-      "x": 240, "y": 3525, "w": 185, "h": 18,
-      "color": [112, 50, 32],
-      "zone": "MarsSurface", "section": "MarsSurface", "laneKey": "C",
-      "moving": true, "moveRange": 45, "moveSpeed": 0.005
-    },
-    {
-      "x": 500, "y": 3415, "w": 180, "h": 18,
-      "color": [105, 48, 30],
+    { "x": 0, "y": 3950, "w": 800, "h": 50, "color": [140,60,30],
+      "zone": "ground", "section": "ground" },
+
+    { "x": 260, "y": 3840, "w": 220, "h": 18, "color": [130,65,40],
+      "zone": "MarsSurface", "section": "MarsSurface", "laneKey": "C" },
+    { "x": 340, "y": 3730, "w": 220, "h": 18, "color": [125,60,38],
+      "zone": "MarsSurface", "section": "MarsSurface", "laneKey": "C" },
+    { "x": 140, "y": 3620, "w": 215, "h": 18, "color": [118,55,35],
+      "zone": "MarsSurface", "section": "MarsSurface", "laneKey": "L" },
+    { "x": 360, "y": 3510, "w": 210, "h": 18, "color": [112,50,32],
+      "zone": "MarsSurface", "section": "MarsSurface", "laneKey": "R" },
+    { "x": 220, "y": 3400, "w": 215, "h": 18, "color": [105,48,30],
+      "zone": "MarsSurface", "section": "MarsSurface", "laneKey": "C" },
+    { "x": 110, "y": 3290, "w": 210, "h": 18, "color": [98,44,28],
+      "zone": "MarsSurface", "section": "MarsSurface", "laneKey": "L" },
+
+    { "x": 360, "y": 3175, "w": 205, "h": 18, "color": [90,40,26],
       "zone": "MarsAtmo", "section": "MarsAtmo", "laneKey": "R",
-      "moving": true, "moveRange": 50, "moveSpeed": 0.006
-    },
-    {
-      "x": 80, "y": 3310, "w": 175, "h": 18,
-      "color": [98, 44, 28],
-      "zone": "MarsAtmo", "section": "MarsAtmo", "laneKey": "LL"
-    },
-    {
-      "x": 340, "y": 3200, "w": 170, "h": 18,
-      "color": [90, 40, 26],
+      "moving": true, "moveRange": 22, "moveSpeed": 0.010 },
+    { "x": 200, "y": 3060, "w": 205, "h": 18, "color": [82,38,25],
       "zone": "MarsAtmo", "section": "MarsAtmo", "laneKey": "C",
-      "moving": true, "moveRange": 55, "moveSpeed": 0.006
-    },
-    {
-      "x": 50, "y": 3095, "w": 165, "h": 18,
-      "color": [82, 38, 25],
-      "zone": "MarsAtmo", "section": "MarsAtmo", "laneKey": "LL",
-      "moving": true, "moveRange": 50, "moveSpeed": 0.007
-    },
-    {
-      "x": 450, "y": 2990, "w": 170, "h": 18,
-      "color": [75, 35, 23],
+      "moving": true, "moveRange": 22, "moveSpeed": 0.010 },
+    { "x": 90, "y": 2945, "w": 210, "h": 18, "color": [75,35,23],
+      "zone": "MarsAtmo", "section": "MarsAtmo", "laneKey": "L",
+      "moving": true, "moveRange": 25, "moveSpeed": 0.011 },
+    { "x": 350, "y": 2830, "w": 200, "h": 18, "color": [68,32,22],
       "zone": "MarsAtmo", "section": "MarsAtmo", "laneKey": "R",
-      "moving": true, "moveRange": 60, "moveSpeed": 0.006
-    },
-    {
-      "x": 230, "y": 2885, "w": 160, "h": 18,
-      "color": [68, 32, 22],
+      "moving": true, "moveRange": 25, "moveSpeed": 0.011 },
+    { "x": 210, "y": 2715, "w": 205, "h": 18, "color": [60,30,45],
       "zone": "MarsAtmo", "section": "MarsAtmo", "laneKey": "C",
-      "moving": true, "moveRange": 55, "moveSpeed": 0.007
-    },
-    {
-      "x": 520, "y": 2775, "w": 155, "h": 18,
-      "color": [60, 30, 45],
-      "zone": "UpperMars", "section": "UpperMars", "laneKey": "RR",
-      "moving": true, "moveRange": 65, "moveSpeed": 0.007
-    },
-    {
-      "x": 140, "y": 2665, "w": 150, "h": 18,
-      "color": [55, 28, 50],
-      "zone": "UpperMars", "section": "UpperMars", "laneKey": "L",
-      "moving": true, "moveRange": 60, "moveSpeed": 0.008
-    },
-    {
-      "x": 370, "y": 2555, "w": 155, "h": 18,
-      "color": [48, 25, 55],
-      "zone": "UpperMars", "section": "UpperMars", "laneKey": "C",
-      "moving": true, "moveRange": 70, "moveSpeed": 0.007
-    },
-    {
-      "x": 70, "y": 2445, "w": 148, "h": 18,
-      "color": [42, 22, 60],
-      "zone": "UpperMars", "section": "UpperMars", "laneKey": "LL",
-      "moving": true, "moveRange": 55, "moveSpeed": 0.008
-    },
-    {
-      "x": 420, "y": 2335, "w": 150, "h": 18,
-      "color": [38, 20, 65],
+      "moving": true, "moveRange": 28, "moveSpeed": 0.012 },
+
+    { "x": 380, "y": 2595, "w": 200, "h": 18, "color": [55,28,50],
       "zone": "UpperMars", "section": "UpperMars", "laneKey": "R",
-      "moving": true, "moveRange": 75, "moveSpeed": 0.008
-    },
-    {
-      "x": 240, "y": 2225, "w": 145, "h": 18,
-      "color": [32, 18, 68],
+      "moving": true, "moveRange": 28, "moveSpeed": 0.012 },
+    { "x": 130, "y": 2475, "w": 200, "h": 18, "color": [48,25,55],
+      "zone": "UpperMars", "section": "UpperMars", "laneKey": "L",
+      "moving": true, "moveRange": 30, "moveSpeed": 0.012 },
+    { "x": 270, "y": 2355, "w": 195, "h": 18, "color": [42,22,60],
       "zone": "UpperMars", "section": "UpperMars", "laneKey": "C",
-      "moving": true, "moveRange": 65, "moveSpeed": 0.008
-    },
-    {
-      "x": 510, "y": 2115, "w": 142, "h": 18,
-      "color": [28, 16, 60],
-      "zone": "LowDeep", "section": "LowDeep", "laneKey": "RR",
-      "moving": true, "moveRange": 80, "moveSpeed": 0.009
-    },
-    {
-      "x": 100, "y": 2005, "w": 140, "h": 18,
-      "color": [25, 14, 55],
-      "zone": "LowDeep", "section": "LowDeep", "laneKey": "L",
-      "moving": true, "moveRange": 75, "moveSpeed": 0.009
-    },
-    {
-      "x": 350, "y": 1895, "w": 138, "h": 18,
-      "color": [22, 12, 50],
+      "moving": true, "moveRange": 30, "moveSpeed": 0.013 },
+    { "x": 100, "y": 2235, "w": 200, "h": 18, "color": [38,20,65],
+      "zone": "UpperMars", "section": "UpperMars", "laneKey": "L",
+      "moving": true, "moveRange": 32, "moveSpeed": 0.013 },
+    { "x": 370, "y": 2115, "w": 195, "h": 18, "color": [32,18,68],
+      "zone": "UpperMars", "section": "UpperMars", "laneKey": "R",
+      "moving": true, "moveRange": 32, "moveSpeed": 0.013 },
+
+    { "x": 230, "y": 1990, "w": 195, "h": 18, "color": [28,16,60],
       "zone": "LowDeep", "section": "LowDeep", "laneKey": "C",
-      "moving": true, "moveRange": 85, "moveSpeed": 0.009
-    },
-    {
-      "x": 50, "y": 1785, "w": 135, "h": 18,
-      "color": [20, 10, 45],
-      "zone": "LowDeep", "section": "LowDeep", "laneKey": "LL",
-      "moving": true, "moveRange": 70, "moveSpeed": 0.010
-    },
-    {
-      "x": 430, "y": 1680, "w": 140, "h": 18,
-      "color": [18, 9, 42],
+      "moving": true, "moveRange": 35, "moveSpeed": 0.014 },
+    { "x": 400, "y": 1865, "w": 190, "h": 18, "color": [25,14,55],
       "zone": "LowDeep", "section": "LowDeep", "laneKey": "R",
-      "moving": true, "moveRange": 90, "moveSpeed": 0.009
-    },
-    {
-      "x": 190, "y": 1570, "w": 135, "h": 18,
-      "color": [16, 8, 38],
-      "zone": "MidDeep", "section": "MidDeep", "laneKey": "L",
-      "moving": true, "moveRange": 85, "moveSpeed": 0.010
-    },
-    {
-      "x": 460, "y": 1460, "w": 132, "h": 18,
-      "color": [14, 7, 35],
+      "moving": true, "moveRange": 35, "moveSpeed": 0.014 },
+    { "x": 120, "y": 1740, "w": 195, "h": 18, "color": [22,12,50],
+      "zone": "LowDeep", "section": "LowDeep", "laneKey": "L",
+      "moving": true, "moveRange": 38, "moveSpeed": 0.014 },
+    { "x": 260, "y": 1615, "w": 190, "h": 18, "color": [20,10,45],
+      "zone": "LowDeep", "section": "LowDeep", "laneKey": "C",
+      "moving": true, "moveRange": 38, "moveSpeed": 0.015 },
+    { "x": 100, "y": 1490, "w": 195, "h": 18, "color": [18,9,42],
+      "zone": "LowDeep", "section": "LowDeep", "laneKey": "L",
+      "moving": true, "moveRange": 38, "moveSpeed": 0.015 },
+
+    { "x": 370, "y": 1360, "w": 190, "h": 18, "color": [16,8,38],
       "zone": "MidDeep", "section": "MidDeep", "laneKey": "R",
-      "moving": true, "moveRange": 95, "moveSpeed": 0.010
-    },
-    {
-      "x": 270, "y": 1350, "w": 135, "h": 18,
-      "color": [12, 6, 32],
+      "moving": true, "moveRange": 40, "moveSpeed": 0.015 },
+    { "x": 200, "y": 1230, "w": 190, "h": 18, "color": [14,7,35],
       "zone": "MidDeep", "section": "MidDeep", "laneKey": "C",
-      "moving": true, "moveRange": 90, "moveSpeed": 0.010
-    },
-    {
-      "x": 90, "y": 1240, "w": 130, "h": 18,
-      "color": [10, 5, 28],
-      "zone": "MidDeep", "section": "MidDeep", "laneKey": "LL",
-      "moving": true, "moveRange": 80, "moveSpeed": 0.011
-    },
-    {
-      "x": 410, "y": 1130, "w": 132, "h": 18,
-      "color": [9, 5, 25],
+      "moving": true, "moveRange": 40, "moveSpeed": 0.015 },
+    { "x": 380, "y": 1100, "w": 185, "h": 18, "color": [12,6,32],
       "zone": "MidDeep", "section": "MidDeep", "laneKey": "R",
-      "moving": true, "moveRange": 100, "moveSpeed": 0.010
-    },
-    {
-      "x": 240, "y": 1020, "w": 128, "h": 18,
-      "color": [8, 4, 22],
-      "zone": "FarDeep", "section": "FarDeep", "laneKey": "C",
-      "moving": true, "moveRange": 95, "moveSpeed": 0.011
-    },
-    {
-      "x": 460, "y": 910, "w": 130, "h": 18,
-      "color": [7, 4, 20],
+      "moving": true, "moveRange": 42, "moveSpeed": 0.016 },
+    { "x": 120, "y": 970, "w": 190, "h": 18, "color": [10,5,28],
+      "zone": "MidDeep", "section": "MidDeep", "laneKey": "L",
+      "moving": true, "moveRange": 42, "moveSpeed": 0.016 },
+
+    { "x": 350, "y": 840, "w": 190, "h": 18, "color": [8,4,22],
       "zone": "FarDeep", "section": "FarDeep", "laneKey": "R",
-      "moving": true, "moveRange": 105, "moveSpeed": 0.011
-    },
-    {
-      "x": 140, "y": 800, "w": 135, "h": 18,
-      "color": [6, 3, 18],
-      "zone": "FarDeep", "section": "FarDeep", "laneKey": "L",
-      "moving": true, "moveRange": 100, "moveSpeed": 0.012
-    },
-    {
-      "x": 340, "y": 690, "w": 130, "h": 18,
-      "color": [5, 3, 16],
+      "moving": true, "moveRange": 42, "moveSpeed": 0.016 },
+    { "x": 170, "y": 710, "w": 190, "h": 18, "color": [6,3,18],
       "zone": "FarDeep", "section": "FarDeep", "laneKey": "C",
-      "moving": true, "moveRange": 110, "moveSpeed": 0.011
-    },
-    {
-      "x": 200, "y": 580, "w": 140, "h": 18,
-      "color": [5, 2, 14],
+      "moving": true, "moveRange": 45, "moveSpeed": 0.016 },
+    { "x": 300, "y": 580, "w": 190, "h": 18, "color": [5,2,14],
+      "zone": "FarDeep", "section": "FarDeep", "laneKey": "C",
+      "moving": true, "moveRange": 45, "moveSpeed": 0.016 },
+
+    { "x": 180, "y": 450, "w": 195, "h": 18, "color": [4,2,12],
       "zone": "Summit", "section": "Summit", "laneKey": "C",
-      "moving": true, "moveRange": 80, "moveSpeed": 0.011
-    },
-    {
-      "x": 400, "y": 465, "w": 140, "h": 18,
-      "color": [4, 2, 12],
-      "zone": "Summit", "section": "Summit", "laneKey": "R",
-      "moving": true, "moveRange": 85, "moveSpeed": 0.012
-    },
-    {
-      "x": 150, "y": 370, "w": 150, "h": 18,
-      "color": [3, 2, 10],
-      "zone": "Summit", "section": "Summit", "laneKey": "L",
-      "moving": true, "moveRange": 75, "moveSpeed": 0.011
-    },
-    {
-      "x": 100, "y": 275, "w": 300, "h": 18,
-      "color": [255, 120, 50],
-      "zone": "finish", "section": "finish",
-      "isFinish": true
-    }
+      "moving": true, "moveRange": 45, "moveSpeed": 0.016 },
+    { "x": 330, "y": 340, "w": 190, "h": 18, "color": [3,1,8],
+      "zone": "Summit", "section": "Summit", "laneKey": "C",
+      "moving": true, "moveRange": 45, "moveSpeed": 0.016 },
+
+    { "x": 150, "y": 275, "w": 300, "h": 18, "color": [255,120,50],
+      "zone": "finish", "section": "finish", "isFinish": true }
   ]
 }
