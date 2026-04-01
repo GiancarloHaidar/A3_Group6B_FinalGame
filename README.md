@@ -7,7 +7,7 @@ Assignment 3: Final Game (Group Project)
 # Group Members (6B)
 
 Abby Vick () - 21071947
-Emily Sharpe () - 21074681
+Emily Sharpe (e4sharpe) - 21074681
 Giancarlo Haidar (ghaidar) - 21069200
 Jayna Patel () - 21069050
 Jenny South () - 21061435
