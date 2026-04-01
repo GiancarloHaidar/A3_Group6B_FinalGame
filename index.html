@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Astroclimb - Vertical Platformer Game</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: #1a2a4a; /* TUNABLE: background colour behind the video */
+      }
+      canvas {
+        display: block;
+        background: transparent !important;
+        position: relative;
+        z-index: 1;
+      }
+      #introVideo {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 10;
+        display: none;
+      }
+      /* One-time click-to-start overlay. Gives the browser the user gesture
+         it needs to play video with audio. Remove entirely if intro has no audio. */
+      #startOverlay {
+        position: fixed;
+        inset: 0;
+        z-index: 20;
+        background: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      #startOverlay span {
+        color: #fff;
+        font-family: monospace;
+        font-size: 22px;
+        letter-spacing: 0.1em;
+        animation: blink 1.2s step-start infinite;
+      }
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+
+      /* ── START MISSION image button ──────────────────────────── */
+      #continueBtn {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 15;
+        align-items: center;
+        justify-content: center;
+      }
+      #continueBtn img {
+        width: 340px; /* TUNABLE: button size               */
+        cursor: pointer;
+        transition:
+          transform 0.1s,
+          filter 0.1s;
+      }
+      #continueBtn img:hover {
+        transform: scale(1.06); /* TUNABLE: grow amount on hover      */
+        filter: brightness(1.2); /* TUNABLE: glow brightness on hover  */
+      }
+      #continueBtn img:active {
+        transform: scale(0.97); /* press-down feel                    */
+        filter: brightness(0.9);
+      }
+    </style>
+    <script src="libraries/p5.min.js"></script>
+    <script src="libraries/p5.sound.min.js"></script>
+  </head>
+  <body>
+    <video id="introVideo" src="Assets/intro.mp4"></video>
+
+    <!-- Shown when the intro video finishes — click to enter gameplay -->
+    <div id="continueBtn">
+      <img id="continueBtnImg" src="Assets/Continue.png" alt="Continue" />
+    </div>
+
+    <!-- Click-to-start overlay. Dismissed on first click, which also unlocks
+         audio so the intro video can play with sound.
+         Remove this block entirely if your intro video has no audio. -->
+    <div id="startOverlay">
+      <span>CLICK TO START</span>
+    </div>
+    <script>
+      document.getElementById("startOverlay").addEventListener(
+        "click",
+        function () {
+          this.style.display = "none"; // hide overlay
+          // _startIntro() is called in p5's setup(), which runs after this click.
+          // If p5 setup has already run (rare but possible), call it now.
+          if (typeof _startIntro === "function" && !window._introStarted) {
+            window._introStarted = true;
+            _startIntro();
+          }
+        },
+        { once: true },
+      );
+    </script>
+    <!-- Load order matters: constants → classes → visuals → screens → conductor -->
+    <script src="constants.js"></script>
+    <script src="Player.js"></script>
+    <script src="Camera2D.js"></script>
+    <script src="Level1Visuals.js"></script>
+    <script src="gameScreen.js"></script>
+    <script src="sketch.js"></script>
+  </body>
+</html>
