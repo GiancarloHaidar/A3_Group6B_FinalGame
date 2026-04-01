@@ -9,8 +9,8 @@ Assignment 3: Final Game (Group Project)
 Abby Vick () - 21071947
 Emily Sharpe (e4sharpe) - 21074681
 Giancarlo Haidar (ghaidar) - 21069200
-Jayna Patel () - 21069050
-Jenny South () - 21061435
+Jayna Patel (j47patel) - 21069050
+Jenny South (jsouth) - 21061435
 Jostlynn Misner () - 21077505
 
 ---
