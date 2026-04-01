@@ -239,6 +239,9 @@ class Player {
           if (typeof currentLevel !== "undefined" && currentLevel === 2) {
             // Level 2: small bounce on landing, mimicking low gravity
             this.vy = this.vy > 1.5 ? -this.vy * 0.5 : 0;
+          } else if (typeof currentLevel !== "undefined" && currentLevel === 3) {
+            // Level 3: heavier thud with micro-bounce (heavy gravity)
+            this.vy = this.vy > 3 ? -this.vy * 0.25 : 0;
           } else {
             // Level 1: clean stop
             this.vy = 0;

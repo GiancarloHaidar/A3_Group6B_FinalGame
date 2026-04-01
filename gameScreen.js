@@ -88,6 +88,32 @@ const CLOUD_DEFS = [
   { type: 1, x: 605, y: 800, scale: 0.65 },
 ];
 
+// ══════════════════════════════════════════════════════════════
+// Level 3 runtime state — Mars → Deep Space
+// ══════════════════════════════════════════════════════════════
+
+// ── Asteroids (background, no collision) ─────────────────────
+let _asteroids = [];
+
+// ── Shooting stars ───────────────────────────────────────────
+let _shootingStars = [];
+let _shootStarTimer = 0;
+
+// ── Spaceship flyover ────────────────────────────────────────
+let _ship = null;          // { x, y, dir } while active; null = idle
+let _shipTimer = 0;        // countdown to next flyover
+let _shakeTimer = 0;       // remaining shake frames
+let _shakeOffsetX = 0;
+let _shakeOffsetY = 0;
+
+// ── Planet positions (fixed in level-space, set once in initGame) ──
+const L3_PLANETS = [
+  { key: "earth",   x: 620, y: 3100, scale: 0.12 },
+  { key: "saturn",  x: 40,  y: 2100, scale: 0.14 },
+  { key: "venus",   x: 610, y: 1400, scale: 0.10 },
+  { key: "mercury", x: 80,  y: 750,  scale: 0.08 },
+];
+
 function getWorldOffsetX() {
   return (width - PLAY_WIDTH) / 2;
 }
@@ -169,7 +195,7 @@ function initGame() {
   // and an altPeak at which it reaches full brightness — this makes them
   // "emerge" as the player climbs into the upper atmosphere and space.
   _fgStars = [];
-  if (currentLevel === 2) {
+  if (currentLevel >= 2) {
     for (let i = 0; i < FG_STAR_COUNT; i++) {
       // Bias star positions toward the top (lower y values) using pow()
       let rawFrac = pow(random(1), 1.6); // 0 = top, 1 = bottom
@@ -220,6 +246,35 @@ function initGame() {
       });
     }
   }
+
+  // ── Level 3 systems init ───────────────────────────────────
+  _asteroids = [];
+  _shootingStars = [];
+  _shootStarTimer = SHOOTSTAR_INTERVAL_MAX;
+  _ship = null;
+  _shipTimer = SHIP_INTERVAL_MAX;
+  _shakeTimer = 0;
+  _shakeOffsetX = 0;
+  _shakeOffsetY = 0;
+
+  if (currentLevel === 3) {
+    // Generate asteroids distributed across the level, biased upper half
+    for (let i = 0; i < ASTEROID_COUNT; i++) {
+      let ay = pow(random(1), 1.3) * LEVEL_HEIGHT * 0.85;
+      _asteroids.push({
+        x: random(PLAY_WIDTH),
+        y: ay,
+        baseX: random(PLAY_WIDTH),
+        baseY: ay,
+        scale: random(ASTEROID_SCALE_MIN, ASTEROID_SCALE_MAX),
+        rot: random(TWO_PI),
+        driftAngle: random(TWO_PI),
+        driftSpeed: random(0.1, ASTEROID_DRIFT_SPEED),
+        driftRange: random(20, 60),
+        phase: random(TWO_PI),
+      });
+    }
+  }
 }
 
 // ── Main game draw ────────────────────────────────────────────
@@ -227,8 +282,8 @@ function drawGame() {
   if (!winTriggered) {
     updatePlatformWobble();
 
-    // ── Drain delayed-input queue (Level 2 only) ────────────
-    if (currentLevel === 2) {
+    // ── Drain delayed-input queue (Level 2 & 3) ─────────────
+    if (currentLevel >= 2) {
       let now = millis();
       while (
         _inputQueue.length > 0 &&
@@ -236,6 +291,14 @@ function drawGame() {
       ) {
         _applyInputEvent(_inputQueue.shift());
       }
+    }
+
+    // ── Level 3 systems update ──────────────────────────────
+    if (currentLevel === 3) {
+      _updateShootingStars();
+      _updateSpaceship();
+      _updateAsteroids();
+      _updateScreenShake();
     }
 
     player.inputLeft = _keys.left;
@@ -261,32 +324,43 @@ function drawGame() {
   g.rect(0, 0, g.width, g.height);
 
   g.push();
-  g.translate(ox, 0);
+  // Apply screen shake offset (Level 3 spaceship flyover)
+  g.translate(ox + _shakeOffsetX, _shakeOffsetY);
   g.translate(-cam.x, -cam.y);
   _drawColumnBackground(g);
   if (currentLevel === 1) {
     _drawClouds(g);
     _drawGroundScenery(g);
-  } else {
+  } else if (currentLevel === 2) {
     _drawStarField(g);
     _drawCloudsL2(g);
+    _drawGroundScenery(g);
+  } else if (currentLevel === 3) {
+    _drawStarField(g);
+    _drawL3Planets(g);
+    _drawL3Asteroids(g);
     _drawGroundScenery(g);
   }
   _drawPlatforms(g);
   if (finishPlatform) _drawFinishMarker(g, finishPlatform);
   _drawPlayer(g);
+  // Level 3: draw shooting stars and spaceship in world space
+  if (currentLevel === 3) {
+    _drawShootingStars(g);
+    _drawSpaceship(g);
+  }
   g.pop();
 
   // ── Stamp buffer (with blur) ─────────────────────────────
   clear();
   stampWorldBuffer();
 
-  // ── Level 2: colour-blindness overlay ───────────────────
-  if (currentLevel === 2 && _lvColorBlindStrength > 0) {
+  // ── Level 2 & 3: colour-blindness overlay ─────────────────
+  if (currentLevel >= 2 && _lvColorBlindStrength > 0) {
     _applyColorBlindOverlay(_lvColorBlindStrength);
   }
 
-  // ── Level 2: vignette / peripheral focus loss ────────────
+  // ── Level 2 & 3: vignette / peripheral focus loss ─────────
   _drawVignette();
 
   // ── Side panels ─────────────────────────────────────────
@@ -315,7 +389,12 @@ function _drawSidePanels(ox) {
   let camMidY = cam.y + height * 0.5;
   let t = 1 - constrain(camMidY / LEVEL_HEIGHT, 0, 1);
   let r, gVal, b;
-  if (currentLevel === 2) {
+  if (currentLevel === 3) {
+    // Mars reddish-brown near ground → pure black in deep space
+    r = lerp(60, 2, t);
+    gVal = lerp(25, 1, t);
+    b = lerp(15, 3, t);
+  } else if (currentLevel === 2) {
     r = lerp(30, 5, t);
     gVal = lerp(35, 8, t);
     b = lerp(55, 20, t);
@@ -353,7 +432,6 @@ function checkExhaustion() {
 // ── Platform wobble / movement ───────────────────────────────
 function updatePlatformWobble() {
   if (currentLevel === 1) return;
-
   for (let p of platforms) {
     if (p.zone === "ground" || p.isFinish) continue;
 
@@ -503,6 +581,10 @@ function _drawGroundScenery(g) {
     let fw = imgFlag.width * FLAG_SCALE;
     let fh = imgFlag.height * FLAG_SCALE;
     g.image(imgFlag, FLAG_X, SCENERY_GROUND_Y - fh + FLAG_OFFSET_Y, fw, fh);
+  } else if (currentLevel === 3 && imgFlag) {
+    let fw = imgFlag.width * FLAG_SCALE;
+    let fh = imgFlag.height * FLAG_SCALE;
+    g.image(imgFlag, FLAG_X, SCENERY_GROUND_Y - fh + FLAG_OFFSET_Y, fw, fh);
   }
 }
 
@@ -514,7 +596,31 @@ function _drawFinishMarker(g, fp) {
   let pulse = 0.5 + 0.5 * sin(frameCount * 0.06);
   g.noStroke();
 
-  if (currentLevel === 2) {
+  if (currentLevel === 3) {
+    g.fill(255, 120, 40, 30 + 40 * pulse);
+    g.rect(fp.x - 6, topY - 90, fp.w + 12, 90, 4);
+
+    g.stroke(255, 150, 60);
+    g.strokeWeight(2);
+    g.line(cx, topY, cx, topY - 80);
+    g.noStroke();
+
+    let wave = sin(frameCount * 0.08) * 6;
+    g.fill(255, 140, 50);
+    g.beginShape();
+    g.vertex(cx, topY - 78);
+    g.vertex(cx + 36 + wave, topY - 68 + wave * 0.3);
+    g.vertex(cx + 34 + wave, topY - 58 + wave * 0.3);
+    g.vertex(cx, topY - 56);
+    g.endShape(CLOSE);
+
+    g.fill(255, 180, 100, 180 + 60 * pulse);
+    g.noStroke();
+    g.textAlign(CENTER, BOTTOM);
+    g.textSize(13);
+    g.textFont("monospace");
+    g.text("E S C A P E", cx, topY - 86);
+  } else if (currentLevel === 2) {
     g.fill(80, 200, 255, 30 + 40 * pulse);
     g.rect(fp.x - 6, topY - 90, fp.w + 12, 90, 4);
 
@@ -596,7 +702,13 @@ function _drawColumnBackground(g) {
     let t = 1 - i / strips; // 0 at top, 1 at bottom
     let r, gVal, b;
 
-    if (currentLevel === 2) {
+    if (currentLevel === 3) {
+      // Mars reddish-brown at bottom → pure black deep space at top
+      let marsT = constrain(t * 2, 0, 1);  // bottom 50% is Mars tones
+      r = round(lerp(0, 70, marsT));
+      gVal = round(lerp(0, 25, marsT));
+      b = round(lerp(2, 12, marsT));
+    } else if (currentLevel === 2) {
       r = round(lerp(10, 0, t));
       gVal = round(lerp(20, 0, t));
       b = round(lerp(80, 0, t));
@@ -637,19 +749,26 @@ function _drawPlatforms(g) {
 
   const gp = platforms.find((p) => p.zone === "ground");
   if (gp) {
-    if (currentLevel === 2 && imgGroundL2) {
-      // ── Level 2 cloud ground — tweak these 4 values independently ──
-      const L2_X = gp.x; // horizontal position
-      const L2_Y = gp.y - 250; // vertical offset (more negative = higher)
-      const L2_WIDTH = 900; // wider/narrower
-      const L2_HEIGHT = 500; // taller/shorter
+    if (currentLevel === 3 && imgGroundL3) {
+      // ── Level 3 Mars ground ──
+      const L3_X = gp.x;
+      const L3_Y = gp.y - 200;
+      const L3_WIDTH = 900;
+      const L3_HEIGHT = 400;
+      g.image(imgGroundL3, L3_X, L3_Y, L3_WIDTH, L3_HEIGHT);
+    } else if (currentLevel === 2 && imgGroundL2) {
+      // ── Level 2 cloud ground ──
+      const L2_X = gp.x;
+      const L2_Y = gp.y - 250;
+      const L2_WIDTH = 900;
+      const L2_HEIGHT = 500;
       g.image(imgGroundL2, L2_X, L2_Y, L2_WIDTH, L2_HEIGHT);
     } else if (currentLevel === 1 && imgGround) {
-      // ── Level 1 ground — original values, tweak independently ──
-      const L1_X = gp.x; // horizontal position
-      const L1_Y = gp.y - 40; // vertical offset
-      const L1_WIDTH = gp.w; // width
-      const L1_HEIGHT = imgGround.height; // height
+      // ── Level 1 ground ──
+      const L1_X = gp.x;
+      const L1_Y = gp.y - 40;
+      const L1_WIDTH = gp.w;
+      const L1_HEIGHT = imgGround.height;
       g.image(imgGround, L1_X, L1_Y, L1_WIDTH, L1_HEIGHT);
     }
   }
@@ -668,7 +787,13 @@ function _drawPlatforms(g) {
 
     let baseR, baseG, baseB, platAlpha;
 
-    if (currentLevel === 2) {
+    if (currentLevel === 3) {
+      // Mars brownish-red near ground → dark purple-blue in deep space
+      baseR = round(lerp(120, 20, platAltFrac));
+      baseG = round(lerp(50, 12, platAltFrac));
+      baseB = round(lerp(30, 50, platAltFrac));
+      platAlpha = round(lerp(200, 90, platAltFrac));
+    } else if (currentLevel === 2) {
       baseR = round(lerp(40, 15, platAltFrac));
       baseG = round(lerp(55, 25, platAltFrac));
       baseB = round(lerp(120, 45, platAltFrac));
@@ -696,7 +821,7 @@ function _drawPlatforms(g) {
 
     if (isPeak || (isZigzag && isNarrow)) {
       g.noFill();
-      let edgeCol = currentLevel === 2 ? [80, 150, 215] : [215, 145, 55];
+      let edgeCol = currentLevel === 3 ? [200, 100, 50] : currentLevel === 2 ? [80, 150, 215] : [215, 145, 55];
       g.stroke(edgeCol[0], edgeCol[1], edgeCol[2], 50);
       g.strokeWeight(1);
       g.rect(p.x, p.y, p.w, p.h, 3);
@@ -938,6 +1063,17 @@ function drawUI() {
 }
 
 function getZoneLabel(altitude) {
+  if (currentLevel === 3) {
+    const t = altitude / LEVEL_HEIGHT;
+    if (t < 0.08) return "Mars Surface";
+    if (t < 0.22) return "Mars Atmo";
+    if (t < 0.38) return "Upper Mars";
+    if (t < 0.52) return "Low Deep";
+    if (t < 0.68) return "Mid Deep";
+    if (t < 0.82) return "Far Deep";
+    if (t < 0.94) return "Summit";
+    return "ESCAPE";
+  }
   if (currentLevel === 2) {
     const t = altitude / LEVEL_HEIGHT;
     if (t < 0.08) return "Ground";
@@ -993,7 +1129,7 @@ function _applyInputEvent(evt) {
 }
 
 function gameKeyPressed(kc) {
-  if (currentLevel === 2) {
+  if (currentLevel >= 2) {
     // Queue the event; it will be applied after INPUT_DELAY_MS.
     _inputQueue.push({ type: "press", kc: kc, ts: millis() });
     // Still mark _playerHasMoved immediately so instructions disappear on first keypress.
@@ -1016,9 +1152,167 @@ function gameKeyPressed(kc) {
 }
 
 function gameKeyReleased(kc) {
-  if (currentLevel === 2) {
+  if (currentLevel >= 2) {
     _inputQueue.push({ type: "release", kc: kc, ts: millis() });
   } else {
     _applyInputEvent({ type: "release", kc: kc });
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// Level 3 — Mars → Deep Space: draw & update helpers
+// ══════════════════════════════════════════════════════════════
+
+// ── Planet decorations ───────────────────────────────────────
+// Static images placed at fixed positions in level-space.
+function _drawL3Planets(g) {
+  for (let pd of L3_PLANETS) {
+    let img = null;
+    if (pd.key === "earth") img = imgEarth;
+    else if (pd.key === "saturn") img = imgSaturn;
+    else if (pd.key === "venus") img = imgVenus;
+    else if (pd.key === "mercury") img = imgMercury;
+    if (!img) continue;
+
+    let pw = img.width * pd.scale;
+    let ph = img.height * pd.scale;
+
+    // Gentle slow float animation
+    let floatY = sin(frameCount * 0.012 + pd.y * 0.01) * 6;
+    g.image(img, pd.x, pd.y + floatY, pw, ph);
+  }
+}
+
+// ── Asteroids ────────────────────────────────────────────────
+function _updateAsteroids() {
+  for (let a of _asteroids) {
+    a.rot += ASTEROID_ROTATE_SPEED;
+    // Slow orbit around base position
+    a.x = a.baseX + sin(frameCount * 0.008 + a.phase) * a.driftRange;
+    a.y = a.baseY + cos(frameCount * 0.006 + a.phase) * a.driftRange * 0.5;
+  }
+}
+
+function _drawL3Asteroids(g) {
+  if (!imgAsteroid) return;
+  for (let a of _asteroids) {
+    let aw = imgAsteroid.width * a.scale;
+    let ah = imgAsteroid.height * a.scale;
+    g.push();
+    g.translate(a.x + aw / 2, a.y + ah / 2);
+    g.rotate(a.rot);
+    g.image(imgAsteroid, -aw / 2, -ah / 2, aw, ah);
+    g.pop();
+  }
+}
+
+// ── Shooting stars ───────────────────────────────────────────
+function _updateShootingStars() {
+  // Spawn new shooting stars on a timer
+  _shootStarTimer--;
+  if (_shootStarTimer <= 0 && _shootingStars.length < SHOOTSTAR_MAX_ACTIVE) {
+    // Spawn in screen-space relative to camera, converted to world coords
+    let sx = random(-50, PLAY_WIDTH);
+    let sy = cam.y + random(-50, height * 0.3);
+    _shootingStars.push({
+      x: sx,
+      y: sy,
+      vx: SHOOTSTAR_SPEED * random(0.7, 1.3),
+      vy: SHOOTSTAR_SPEED * random(0.5, 1.0),
+      life: 0,
+      maxLife: floor(random(60, 120)),
+    });
+    _shootStarTimer = floor(
+      random(SHOOTSTAR_INTERVAL_MIN, SHOOTSTAR_INTERVAL_MAX)
+    );
+  }
+
+  // Update existing
+  for (let i = _shootingStars.length - 1; i >= 0; i--) {
+    let s = _shootingStars[i];
+    s.x += s.vx;
+    s.y += s.vy;
+    s.life++;
+    if (s.life > s.maxLife || s.x > PLAY_WIDTH + 100) {
+      _shootingStars.splice(i, 1);
+    }
+  }
+}
+
+function _drawShootingStars(g) {
+  if (!imgShootingStar) return;
+  for (let s of _shootingStars) {
+    let fadeIn = constrain(s.life / 10, 0, 1);
+    let fadeOut = constrain((s.maxLife - s.life) / 15, 0, 1);
+    let alpha = round(255 * fadeIn * fadeOut);
+    if (alpha < 5) continue;
+
+    let sw = imgShootingStar.width * SHOOTSTAR_SCALE;
+    let sh = imgShootingStar.height * SHOOTSTAR_SCALE;
+    g.push();
+    g.translate(s.x, s.y);
+    // Rotate sprite to match movement direction
+    g.rotate(atan2(s.vy, s.vx) + PI * 0.15);
+    g.tint(255, 255, 255, alpha);
+    g.image(imgShootingStar, -sw / 2, -sh / 2, sw, sh);
+    g.noTint();
+    g.pop();
+  }
+}
+
+// ── Spaceship flyover ────────────────────────────────────────
+function _updateSpaceship() {
+  if (_ship) {
+    // Move ship across screen
+    _ship.x += SHIP_SPEED * _ship.dir;
+    // Check if ship has exited screen bounds (in world space)
+    let screenLeft = cam.x - 100;
+    let screenRight = cam.x + PLAY_WIDTH + 100;
+    if (
+      (_ship.dir > 0 && _ship.x > screenRight) ||
+      (_ship.dir < 0 && _ship.x < screenLeft)
+    ) {
+      _ship = null;
+      _shakeTimer = SHIP_SHAKE_DECAY; // residual shake after exit
+    }
+  } else {
+    // Countdown to next flyover
+    _shipTimer--;
+    if (_shipTimer <= 0) {
+      let dir = random(1) < 0.5 ? 1 : -1;
+      let startX = dir > 0 ? -120 : PLAY_WIDTH + 120;
+      let yInScreen = cam.y + random(height * 0.15, height * 0.65);
+      _ship = { x: startX, y: yInScreen, dir: dir };
+      _shakeTimer = 999; // active shake while ship is on screen
+      _shipTimer = floor(random(SHIP_INTERVAL_MIN, SHIP_INTERVAL_MAX));
+    }
+  }
+}
+
+function _drawSpaceship(g) {
+  if (!_ship || !imgSpaceship) return;
+  let sw = imgSpaceship.width * SHIP_SCALE;
+  let sh = imgSpaceship.height * SHIP_SCALE;
+  g.push();
+  g.translate(_ship.x + sw / 2, _ship.y + sh / 2);
+  if (_ship.dir < 0) g.scale(-1, 1);
+  g.image(imgSpaceship, -sw / 2, -sh / 2, sw, sh);
+  g.pop();
+}
+
+// ── Screen shake ─────────────────────────────────────────────
+function _updateScreenShake() {
+  if (_shakeTimer > 0 || _ship) {
+    let intensity = SHIP_SHAKE_INTENSITY;
+    // Decay intensity when ship has left
+    if (!_ship && _shakeTimer > 0) {
+      intensity *= _shakeTimer / SHIP_SHAKE_DECAY;
+      _shakeTimer--;
+    }
+    _shakeOffsetX = random(-intensity, intensity);
+    _shakeOffsetY = random(-intensity, intensity);
+  } else {
+    _shakeOffsetX = 0;
+    _shakeOffsetY = 0;
   }
 }

@@ -15,6 +15,7 @@ let levelData;
 let currentLevel = 1;
 let level1Data = null;
 let level2Data = null;
+let level3Data = null;
 
 // ── Star progression ──────────────────────────────────────────
 let _totalStars = 0;
@@ -44,9 +45,17 @@ let imgTree;
 let imgAstronaut;
 let imgGround;
 let imgGroundL2;
+let imgGroundL3;
 let imgCloud1;
 let imgCloud2;
 let imgFlag;
+let imgEarth;
+let imgSaturn;
+let imgVenus;
+let imgMercury;
+let imgShootingStar;
+let imgAsteroid;
+let imgSpaceship;
 
 let bgMusic;
 let jumpSound;
@@ -61,6 +70,7 @@ let bgMusic2;
 function preload() {
   level1Data = loadJSON("level1.json");
   level2Data = loadJSON("level2.json");
+  level3Data = loadJSON("level3.json");
   bgMusic = loadSound("Assets/Background1.mp3");
   jumpSound = loadSound("Assets/Jump.mp3");
   landingSound = loadSound("Assets/Landing.mp3");
@@ -76,7 +86,9 @@ function preload() {
 // ── Level helpers ─────────────────────────────────────────────
 function _loadLevel(n) {
   currentLevel = n;
-  levelData = n === 2 ? level2Data : level1Data;
+  if (n === 3) levelData = level3Data;
+  else if (n === 2) levelData = level2Data;
+  else levelData = level1Data;
 }
 
 // ── Intro video helpers ───────────────────────────────────────
@@ -300,6 +312,136 @@ function _onLevel2VideoContinued() {
   if (bgMusic && bgMusic.isPlaying()) bgMusic.stop();
 }
 
+// ── Level 3 transition video ──────────────────────────────────
+// Reuses the same pattern as Level 2 video transitions.
+// bgMusic2 continues into Level 3 (same space soundtrack).
+
+function _playLevel3Video() {
+  let backdrop = document.getElementById("videoBackdrop");
+  if (!backdrop) {
+    backdrop = document.createElement("div");
+    backdrop.id = "videoBackdrop";
+    backdrop.style.cssText =
+      "position:fixed;inset:0;background:#000;z-index:9;";
+    document.body.appendChild(backdrop);
+  }
+  backdrop.style.display = "block";
+
+  _introVideo = document.getElementById("introVideo");
+
+  // Re-use the Level 2 video for the Level 3 transition.
+  // Replace with a dedicated Level3Video.mp4 if one is created later.
+  _introVideo.src = "Assets/Level2Video.mp4";
+  _introVideo.muted = true;
+
+  _introVideo.style.display = "block";
+  _introVideo.style.position = "fixed";
+  _introVideo.style.width = "90%";
+  _introVideo.style.height = "90%";
+  _introVideo.style.top = "50%";
+  _introVideo.style.left = "50%";
+  _introVideo.style.transform = "translate(-50%, -50%)";
+  _introVideo.style.objectFit = "contain";
+  _introVideo.style.zIndex = "10";
+
+  _introVideo.addEventListener("ended", _onLevel3VideoEnded, { once: true });
+
+  _introVideo.play().catch(() => {
+    console.warn("Level3 transition video play() failed — skipping to game.");
+    _onLevel3VideoEnded();
+  });
+
+  if (speakingSound && speakingSound.isLoaded()) speakingSound.play();
+  if (bgMusic && bgMusic.isPlaying()) bgMusic.stop();
+  if (bgMusic2 && bgMusic2.isLoaded() && !bgMusic2.isPlaying()) bgMusic2.loop();
+}
+
+function _onLevel3VideoEnded() {
+  if (_introVideo) _introVideo.pause();
+
+  document.getElementById("continueBtnImg").src = "Assets/StartButton.png";
+  const btn = document.getElementById("continueBtn");
+  btn.style.display = "flex";
+  _setContinueBtnHandler(_onLevel3VideoContinued);
+}
+
+function _onLevel3VideoContinued() {
+  document.getElementById("continueBtn").style.display = "none";
+  _continueBtnHandler = null;
+  if (_introVideo) {
+    _introVideo.style.display = "none";
+    _introVideo = null;
+  }
+  let backdrop = document.getElementById("videoBackdrop");
+  if (backdrop) backdrop.style.display = "none";
+  _starAwardedThisWin = false;
+  _loadLevel(3);
+  currentScreen = "game";
+  initGame();
+  _initBlur();
+  if (speakingSound && speakingSound.isPlaying()) speakingSound.stop();
+  if (bgMusic && bgMusic.isPlaying()) bgMusic.stop();
+}
+
+// ── Final closing clip (after Level 3 win) ────────────────────
+// Plays the final video, then auto-restarts the game from Level 1.
+
+function _playFinalClip() {
+  _stopMusic();
+
+  let backdrop = document.getElementById("videoBackdrop");
+  if (!backdrop) {
+    backdrop = document.createElement("div");
+    backdrop.id = "videoBackdrop";
+    backdrop.style.cssText =
+      "position:fixed;inset:0;background:#000;z-index:9;";
+    document.body.appendChild(backdrop);
+  }
+  backdrop.style.display = "block";
+
+  _introVideo = document.getElementById("introVideo");
+  _introVideo.src = "Assets/FinalClip.mp4";
+  _introVideo.muted = true;
+
+  _introVideo.style.display = "block";
+  _introVideo.style.position = "fixed";
+  _introVideo.style.width = "90%";
+  _introVideo.style.height = "90%";
+  _introVideo.style.top = "50%";
+  _introVideo.style.left = "50%";
+  _introVideo.style.transform = "translate(-50%, -50%)";
+  _introVideo.style.objectFit = "contain";
+  _introVideo.style.zIndex = "10";
+
+  _introVideo.addEventListener("ended", _onFinalClipEnded, { once: true });
+
+  _introVideo.play().catch(() => {
+    console.warn("Final clip play() failed — restarting game.");
+    _onFinalClipEnded();
+  });
+}
+
+function _onFinalClipEnded() {
+  if (_introVideo) {
+    _introVideo.pause();
+    _introVideo.style.display = "none";
+    _introVideo = null;
+  }
+  let backdrop = document.getElementById("videoBackdrop");
+  if (backdrop) backdrop.style.display = "none";
+
+  // Auto-restart from Level 1
+  _totalStars = 0;
+  _starAwardedThisWin = false;
+  _winMusicStopped = false;
+  _loseMusicStopped = false;
+  _loadLevel(1);
+  currentScreen = "game";
+  initGame();
+  _initBlur();
+  _syncMusic();
+}
+
 // ── Blur helpers ──────────────────────────────────────────────
 
 function _initBlur() {
@@ -385,7 +527,7 @@ function stampWorldBuffer() {
 // bar and altitude indicators are never darkened.
 // Uses Canvas 2D radial gradient — same approach as the blur system.
 function _drawVignette() {
-  if (currentLevel !== 2) return;
+  if (currentLevel !== 2 && currentLevel !== 3) return;
 
   let fatigueT = player ? 1 - constrain(player.energy / ENERGY_MAX, 0, 1) : 0;
 
@@ -436,8 +578,16 @@ function setup() {
   imgAstronaut = loadImage("Assets/astronaut.png");
   imgGround = loadImage("Assets/ground.png");
   imgGroundL2 = loadImage("Assets/cloud_platform1.png");
+  imgGroundL3 = loadImage("Assets/mars_platform.png");
   imgCloud1 = loadImage("Assets/Cloud1.png");
   imgCloud2 = loadImage("Assets/Cloud2.png");
+  imgEarth = loadImage("Assets/earth.png");
+  imgSaturn = loadImage("Assets/saturn.png");
+  imgVenus = loadImage("Assets/venus.png");
+  imgMercury = loadImage("Assets/mercury.png");
+  imgShootingStar = loadImage("Assets/shooting_star.png");
+  imgAsteroid = loadImage("Assets/astroid.png");
+  imgSpaceship = loadImage("Assets/spaceship.png");
 
   _startIntro();
 }
@@ -445,10 +595,11 @@ function setup() {
 // ── Music helpers ─────────────────────────────────────────────
 // Call after any level change or screen transition.
 // Starts the correct track for the current level and stops the other.
+// Level 3 shares bgMusic2 with Level 2.
 function _syncMusic() {
-  let isLevel2 = currentLevel === 2;
-  let activeTrack = isLevel2 ? bgMusic2 : bgMusic;
-  let inactiveTrack = isLevel2 ? bgMusic : bgMusic2;
+  let useSpaceTrack = currentLevel === 2 || currentLevel === 3;
+  let activeTrack = useSpaceTrack ? bgMusic2 : bgMusic;
+  let inactiveTrack = useSpaceTrack ? bgMusic : bgMusic2;
   if (inactiveTrack.isPlaying()) inactiveTrack.stop();
   if (!activeTrack.isPlaying()) activeTrack.loop();
 }
@@ -481,6 +632,13 @@ function draw() {
         _totalStars++;
         _starAwardedThisWin = true;
         _starAnimTimer = 0;
+
+        // Level 3 win → play the final closing clip, then auto-restart
+        if (currentLevel === 3) {
+          _playFinalClip();
+          currentScreen = "finalclip";
+          return;
+        }
       }
       _starAnimTimer++;
       drawWinScreen();
@@ -492,6 +650,10 @@ function draw() {
         _loseMusicStopped = true;
       }
       drawLoseScreen();
+      break;
+    case "finalclip":
+      // Final video is playing via DOM — just draw black behind it
+      background(0);
       break;
   }
 }
@@ -533,7 +695,9 @@ function drawWinScreen() {
   let winMsg =
     currentLevel === 1
       ? "You reached the top of Level 1."
-      : "You escaped into deep space.";
+      : currentLevel === 2
+        ? "You escaped into deep space."
+        : "You conquered Mars and beyond.";
   text(winMsg, ox + PLAY_WIDTH / 2, height / 2 - 20);
 
   _drawStarReward(ox);
@@ -545,6 +709,12 @@ function drawWinScreen() {
     if (currentLevel === 1) {
       text(
         "Press R to replay  |  Press 2 for Level 2",
+        ox + PLAY_WIDTH / 2,
+        height / 2 + 120,
+      );
+    } else if (currentLevel === 2) {
+      text(
+        "Press R to replay  |  Press 3 for Level 3",
         ox + PLAY_WIDTH / 2,
         height / 2 + 120,
       );
@@ -676,15 +846,16 @@ function drawWinStar(x, y, r1, r2, pts) {
 }
 
 function keyPressed() {
-  if (currentScreen === "intro") return;
+  if (currentScreen === "intro" || currentScreen === "finalclip") return;
 
   if (currentScreen === "game") {
     gameKeyPressed(keyCode);
 
-    // TEMP: press T to switch to Level 2 for testing (plays transition video)
+    // TEMP: press T to cycle to next level for testing
     if (key === "t" || key === "T") {
       _stopMusic();
-      _playLevel2Video();
+      if (currentLevel === 1) _playLevel2Video();
+      else if (currentLevel === 2) _playLevel3Video();
     }
   }
 
@@ -711,11 +882,16 @@ function keyPressed() {
       _syncMusic();
     }
     if (key === "2") {
-      // Reset one-shot flags; bgMusic2 starts with the Level 2 video
       _winMusicStopped = false;
       _loseMusicStopped = false;
       _stopMusic();
       _playLevel2Video();
+    }
+    if (key === "3") {
+      _winMusicStopped = false;
+      _loseMusicStopped = false;
+      _stopMusic();
+      _playLevel3Video();
     }
   }
 }
