@@ -11,7 +11,7 @@ Emily Sharpe (e4sharpe) - 21074681
 Giancarlo Haidar (ghaidar) - 21069200
 Jayna Patel (j47patel) - 21069050
 Jenny South (jsouth) - 21061435
-Jostlynn Misner () - 21077505
+Jostlynn Misner (jdmisner) - 21077505
 
 ---
 
