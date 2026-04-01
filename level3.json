@@ -195,13 +195,19 @@
       "x": 200, "y": 580, "w": 140, "h": 18,
       "color": [5, 2, 14],
       "zone": "Summit", "section": "Summit", "laneKey": "C",
-      "moving": true, "moveRange": 100, "moveSpeed": 0.012
+      "moving": true, "moveRange": 80, "moveSpeed": 0.011
     },
     {
-      "x": 400, "y": 465, "w": 135, "h": 18,
+      "x": 400, "y": 465, "w": 140, "h": 18,
       "color": [4, 2, 12],
       "zone": "Summit", "section": "Summit", "laneKey": "R",
-      "moving": true, "moveRange": 110, "moveSpeed": 0.013
+      "moving": true, "moveRange": 85, "moveSpeed": 0.012
+    },
+    {
+      "x": 150, "y": 370, "w": 150, "h": 18,
+      "color": [3, 2, 10],
+      "zone": "Summit", "section": "Summit", "laneKey": "L",
+      "moving": true, "moveRange": 75, "moveSpeed": 0.011
     },
     {
       "x": 100, "y": 275, "w": 300, "h": 18,

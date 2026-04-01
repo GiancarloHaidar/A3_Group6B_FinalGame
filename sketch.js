@@ -331,7 +331,7 @@ function _playLevel3Video() {
 
   // Re-use the Level 2 video for the Level 3 transition.
   // Replace with a dedicated Level3Video.mp4 if one is created later.
-  _introVideo.src = "Assets/Level2Video.mp4";
+  _introVideo.src = "Assets/Before_Level_3_Dialogue_Vid.mp4";
   _introVideo.muted = true;
 
   _introVideo.style.display = "block";
@@ -343,6 +343,19 @@ function _playLevel3Video() {
   _introVideo.style.transform = "translate(-50%, -50%)";
   _introVideo.style.objectFit = "contain";
   _introVideo.style.zIndex = "10";
+
+  const EARLY_BY_L3 = 2.0;
+  let _btnShown = false;
+
+  _introVideo.addEventListener("timeupdate", function _checkEarlyL3() {
+    if (_btnShown) return;
+    const remaining = _introVideo.duration - _introVideo.currentTime;
+    if (remaining <= EARLY_BY_L3) {
+      _btnShown = true;
+      _introVideo.removeEventListener("timeupdate", _checkEarlyL3);
+      _onLevel3VideoEnded();
+    }
+  });
 
   _introVideo.addEventListener("ended", _onLevel3VideoEnded, { once: true });
 

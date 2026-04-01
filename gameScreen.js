@@ -390,10 +390,10 @@ function _drawSidePanels(ox) {
   let t = 1 - constrain(camMidY / LEVEL_HEIGHT, 0, 1);
   let r, gVal, b;
   if (currentLevel === 3) {
-    // Mars reddish-brown near ground → pure black in deep space
-    r = lerp(60, 2, t);
-    gVal = lerp(25, 1, t);
-    b = lerp(15, 3, t);
+    // Match column background: #00092c at ground → black in deep space
+    r = lerp(0, 0, t);
+    gVal = lerp(0, 9, t);
+    b = lerp(0, 44, t);
   } else if (currentLevel === 2) {
     r = lerp(30, 5, t);
     gVal = lerp(35, 8, t);
@@ -703,11 +703,10 @@ function _drawColumnBackground(g) {
     let r, gVal, b;
 
     if (currentLevel === 3) {
-      // Mars reddish-brown at bottom → pure black deep space at top
-      let marsT = constrain(t * 2, 0, 1);  // bottom 50% is Mars tones
-      r = round(lerp(0, 70, marsT));
-      gVal = round(lerp(0, 25, marsT));
-      b = round(lerp(2, 12, marsT));
+      // #00092c (0,9,44) at ground → pitch black at top (deep space)
+      r = round(lerp(0, 0, t));
+      gVal = round(lerp(0, 9, t));
+      b = round(lerp(0, 44, t));
     } else if (currentLevel === 2) {
       r = round(lerp(10, 0, t));
       gVal = round(lerp(20, 0, t));
@@ -788,11 +787,11 @@ function _drawPlatforms(g) {
     let baseR, baseG, baseB, platAlpha;
 
     if (currentLevel === 3) {
-      // Mars brownish-red near ground → dark purple-blue in deep space
-      baseR = round(lerp(120, 20, platAltFrac));
-      baseG = round(lerp(50, 12, platAltFrac));
-      baseB = round(lerp(30, 50, platAltFrac));
-      platAlpha = round(lerp(200, 90, platAltFrac));
+      // Same subtle blend approach as Level 2 — flat low opacity
+      baseR = round(lerp(40, 15, platAltFrac));
+      baseG = round(lerp(50, 20, platAltFrac));
+      baseB = round(lerp(80, 35, platAltFrac));
+      platAlpha = 65;
     } else if (currentLevel === 2) {
       baseR = round(lerp(40, 15, platAltFrac));
       baseG = round(lerp(55, 25, platAltFrac));
@@ -984,7 +983,7 @@ function drawUI() {
 
   fill(0, 0, 0, 140);
   noStroke();
-  rect(barX - 7, barTopYA - 6, 22, barHA + 12, 8);
+  rect(barX - 24, barTopYA - 6, 39, barHA + 12, 8);
 
   stroke(200, 230, 255, 200);
   strokeWeight(1.5);
@@ -1020,6 +1019,19 @@ function drawUI() {
     ellipse(barX + 4, barTopYA + barHA - fillH, 7, 7);
     fill(aR, aG, aB, 255);
     ellipse(barX + 4, barTopYA + barHA - fillH, 4, 4);
+
+    // ── Small astronaut icon beside the altitude dot ──────────
+    if (imgAstronaut) {
+      let iconW = 14;
+      let iconH = 18;
+      let iconX = barX - 20;
+      let iconY = barTopYA + barHA - fillH - iconH / 2;
+      // Gentle bob
+      iconY += sin(frameCount * 0.06) * 1.5;
+      tint(255, 255, 255, round(180 + 60 * dotPulse));
+      image(imgAstronaut, iconX, iconY, iconW, iconH);
+      noTint();
+    }
   }
 
   let kmLabel = altKm >= 99.5 ? "100 km" : floor(altKm) + " km";
