@@ -1,6 +1,6 @@
 # Project Title
 
-Assignment 3: Final Game (Group Project) - hello
+Assignment 3: Final Game (Group Project)
 
 ---
 
