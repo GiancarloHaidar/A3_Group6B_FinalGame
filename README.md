@@ -39,7 +39,7 @@ To play the game, a single player needs a device and a keyboard to navigate the 
 
 After the in-class playtesting session, our group observed how players interacted with the levels and received feedback. Based on these observations, we made several adjustments to improve clarity, progression of difficulty, and gameplay flow.
 
-Change 1: Players reported not noticing the level progress bar because it blended into the environment. So we modified the bar to include a little icon to better reflect the game's visual progress. This allowed for more forward planning in the earlier levels before proceeding to the harder ones.
+Change 1: Players reported not noticing the level progress bar because it blended into the environment. So we modified the bar to include a small icon that better reflects the game's visual progress. This allowed for more planning in the earlier levels before proceeding to the harder ones.
 
 Change 2: Additionally, Level 3 had to introduce three new game mechanics for deeper emergence. Based on feedback, we decided to fine-tune our environment to better represent our narrative of moving space into deep space:
 
