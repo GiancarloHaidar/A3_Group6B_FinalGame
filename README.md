@@ -41,7 +41,7 @@ After the in-class playtesting session, our group observed how players interacte
 
 Change 1: Players reported not noticing the level progress bar because it blended into the environment. So we modified the bar to include a little icon to better reflect the game's visual progress. This allowed for more forward planning in the earlier levels before proceeding to the harder ones.
 
-Change 2: Consequently, Level 3 had to introduce three new game mechanics for deeper emergence. Based on feedback, we decided to fine-tune our environment to better represent our narrative of moving space into deep space:
+Change 2: Additionally, Level 3 had to introduce three new game mechanics for deeper emergence. Based on feedback, we decided to fine-tune our environment to better represent our narrative of moving space into deep space:
 
 - Platforms move more aggressively to challenge the player more.
 - Gravity is higher to give the player less predictable control.
