@@ -1,4 +1,4 @@
-# Project Title (Multiple Sclerosis Game)
+# Multiple Sclerosis (MS) Game
 
 Assignment 3: Final Game (Group Project)
 
@@ -17,7 +17,7 @@ Assignment 3: Final Game (Group Project)
 
 # Description:
 
-Challenges associated with Multiple Sclerosis (MS) through gameplay mechanics rather than direct instruction.
+Challenges associated with MS through gameplay mechanics rather than direct instruction.
 
 Multiple Sclerosis is a neurological condition that affects communication between the brain and body, often causing symptoms such as fatigue, balance issues, vision problems, and coordination difficulties [1]. Our game translates aspects of these symptoms into interactive mechanics, so players experience these effects as they navigate the environment.
 
