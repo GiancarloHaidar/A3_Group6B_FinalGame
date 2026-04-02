@@ -6,7 +6,7 @@ Assignment 3: Final Game (Group Project)
 
 # Group Members (6B)
 
-- Abby Vick () - 21071947
+- Abby Vick (avick) - 21071947
 - Emily Sharpe (e4sharpe) - 21074681
 - Giancarlo Haidar (ghaidar) - 21069200
 - Jayna Patel (j47patel) - 21069050
@@ -37,27 +37,19 @@ To play the game, a single player needs a device and a keyboard to navigate the 
 
 ## Post-Playtest:
 
-After the in-class playtesting session, our group observed how players interacted with the level and reviewed classmates' feedback. Based on these observations, we made several adjustments to improve clarity, progression of difficulty, and gameplay flow.
+After the in-class playtesting session, our group observed how players interacted with the levels and received feedback. Based on these observations, we made several adjustments to improve clarity, progression of difficulty, and gameplay flow.
 
-Change 1: Players reported that the first level felt too long and overwhelming for an introduction to the game mechanics. To improve onboarding, we reduced the number of levels and platforms. This allows players to first learn the basic platforming mechanics before encountering more complex challenges in later levels.
+Change 1: Players reported not noticing the level progress bar because it blended into the environment. So we modified the bar to include a little icon to better reflect the game's visual progress. This allowed for more forward planning in the earlier levels before proceeding to the harder ones.
 
-Change 2: Originally, several mechanics were introduced too early in the gameplay experience. Based on feedback, we decided to restructure the progression so that mechanics appear gradually across levels:
+Change 2: Consequently, Level 3 had to introduce three new game mechanics for deeper emergence. Based on feedback, we decided to fine-tune our environment to better represent our narrative of moving space into deep space:
 
-- Level 1: Basic platform movement and environmental effects such as visual blur.
-- Level 2: Moving platforms and increased coordination challenges.
-- Level 3: Altered gravity and more difficult jumps to simulate instability and balance issues.
+- Platforms move more aggressively to challenge the player more.
+- Gravity is higher to give the player less predictable control.
+- Integrated the disorientation symptom by adding a spaceship that randomly flies across and shakes the screen 
 
-This progression helps players understand the controls before experiencing more challenging mechanics.
+These changes help players understand the narrative during the game's final stages.
 
-Change 3: During playtesting, some players struggled with the spacing and timing of jumps between platforms. We adjusted the platform spacing and repositioned several jumps to increase the difficulty more naturally as the level progresses.
-
-## Post-Showcase:
-
-Following our showcase, our group received feedback from instructors and teaching instructors on topics ranging from visual progression representation to the gradual introduction of game mechanics. As for our planned improvements, we have based the future changes on these planned game mechanics.
-
-Change 1: Professor Karen and Han did not initially notice the level progress bar because it blended into the environment, so they suggested modifying the tone to make it more visible and better reflect the game's visual progression.
-
-Change 2: The final piece of feedback came from revisiting the level at the end of the session, where Professor Karen and Han suggested a gradual introduction of colour-blind platforms for gameplay friendliness rather than strict representations of MS symptoms.
+Change 3: During playtesting, some players struggled to identify the disability within the game's mechanics and suggested we prioritize gameplay friendliness over strict representations. We gradually introduce the colour-blindness symptom by adjusting the platforms from blending in at level 1 to showcasing it at level 2+ to better represent the symptom.
 
 ---
 
@@ -124,16 +116,16 @@ References
 
 [12] Pixabay. 2023. Roblox Minecraft Fortnite video game music. Pixabay. https://pixabay.com/music/video-games-roblox-minecraft-fortnite-video-game-music-358426/
 
-[13] Timofey Khripachenko. 2024. A star field with many stars in the sky. Pexels. [https://www.pexels.com/video/a-star-field-with-many-stars-in-the-sky-20556585/](https://www.pexels.com/video/a-star-field-with-many-stars-in-the-sky-20556585/). (Accessed: April 1, 2026).
+[13] Timofey Khripachenko. 2024. A star field with many stars in the sky. Pexels. https://www.pexels.com/video/a-star-field-with-many-stars-in-the-sky-20556585/. Accessed: April 1, 2026.
 
-[14] Google Gemini. 2026. Google. [https://gemini.google.com/share/b18bf4134ea2](https://gemini.google.com/share/b18bf4134ea2). (Accessed: April 1, 2026).
+[14] Google Gemini. 2026. Google. https://gemini.google.com/share/b18bf4134ea2. Accessed: April 1, 2026.
 
-[15] Alexander-7. n.d. Space ship for video game in pixel art style. Adobe Stock. [https://stock.adobe.com/ca/search?k=pixelated%2Bspace%2Bship&asset_id=356257839](https://stock.adobe.com/ca/search?k=pixelated%2Bspace%2Bship&asset_id=356257839). (Accessed: April 1, 2026).
+[15] Alexander-7. n.d. Space ship for video game in pixel art style. Adobe Stock. https://stock.adobe.com/ca/search?k=pixelated%2Bspace%2Bship&asset_id=356257839. Accessed: April 1, 2026.
 
-[16] Adobe. n.d. Stars and Meteors. Adobe Stock. [https://stock.adobe.com/ca/search?k=pixelated%2Bspace%2Bship&asset_id=356257839](https://stock.adobe.com/ca/search?k=planets%25252Bpixelated&asset_id=1726024516). (Accessed: April 1, 2026).
+[16] Adobe. n.d. Stars and Meteors. Adobe Stock. https://stock.adobe.com/ca/search?k=planets%25252Bpixelated&asset_id=1726024516. Accessed: April 1, 2026.
 
-[17] Google Gemini. 2026. Google. [https://gemini.google.com/share/e5d6e9a13df8](https://gemini.google.com/share/e5d6e9a13df8). (Accessed: April 1, 2026).
+[17] Google Gemini. 2026. Google. https://gemini.google.com/share/e5d6e9a13df8. Accessed: April 1, 2026.
 
-[18] Google Gemini. 2026. Google. [https://gemini.google.com/share/b66454b410b9](https://gemini.google.com/share/b66454b410b9). (Accessed: April 1, 2026).
+[18] Google Gemini. 2026. Google. https://gemini.google.com/share/b66454b410b9. Accessed: April 1, 2026.
 
-[19] Google Gemini. 2026. Google. [https://gemini.google.com/share/96ff1945b662](https://gemini.google.com/share/96ff1945b662). (Accessed: April 1, 2026).
+[19] Google Gemini. 2026. Google. https://gemini.google.com/share/96ff1945b662. Accessed: April 1, 2026.
