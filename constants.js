@@ -211,7 +211,7 @@ const LEVEL_HEIGHT = 4000;
 // ── Level 2 flag ─────────────────────────────────────────────
 const FLAG_SCALE = 0.1; // resize — 1.0 = full size (~900px tall), 0.3 = manageable
 const FLAG_X = 150; // px from left edge of play column
-const FLAG_OFFSET_Y = 10; // px vertical nudge (positive = lower, negative = higher)
+const FLAG_OFFSET_Y = 18; // px vertical nudge (positive = lower, negative = higher)
 
 // ── Vignette (Level 2 only) ──────────────────────────────────
 // A radial darkening drawn over the world buffer, under the UI.
@@ -265,27 +265,27 @@ const INPUT_DELAY_MS = 150;
 // and visual distortion. The shake persists for the duration of the
 // flyover plus a short decay.
 //
-const SHIP_INTERVAL_MIN = 480;   // ~8 s minimum between flyovers
-const SHIP_INTERVAL_MAX = 900;   // ~15 s max gap
-const SHIP_SPEED = 4.5;          // px/frame horizontal speed
-const SHIP_SCALE = 0.08;         // scale of spaceship.png
-const SHIP_SHAKE_INTENSITY = 4;  // max px offset during flyover
-const SHIP_SHAKE_DECAY = 30;     // frames of shake after ship exits
+const SHIP_INTERVAL_MIN = 480; // ~8 s minimum between flyovers
+const SHIP_INTERVAL_MAX = 900; // ~15 s max gap
+const SHIP_SPEED = 4.5; // px/frame horizontal speed
+const SHIP_SCALE = 0.08; // scale of spaceship.png
+const SHIP_SHAKE_INTENSITY = 4; // max px offset during flyover
+const SHIP_SHAKE_DECAY = 30; // frames of shake after ship exits
 
 // ── Shooting stars (Level 3 only) ────────────────────────────
 // Bright streaks that fly diagonally across the visible screen.
 // More frequent at higher altitudes. Purely cosmetic.
-const SHOOTSTAR_INTERVAL_MIN = 90;   // ~1.5 s minimum between spawns
-const SHOOTSTAR_INTERVAL_MAX = 240;  // ~4 s max gap
-const SHOOTSTAR_SPEED = 6;           // px/frame diagonal speed
-const SHOOTSTAR_SCALE = 0.06;        // scale of shooting_star.png
-const SHOOTSTAR_MAX_ACTIVE = 3;      // cap simultaneous stars
+const SHOOTSTAR_INTERVAL_MIN = 90; // ~1.5 s minimum between spawns
+const SHOOTSTAR_INTERVAL_MAX = 240; // ~4 s max gap
+const SHOOTSTAR_SPEED = 6; // px/frame diagonal speed
+const SHOOTSTAR_SCALE = 0.06; // scale of shooting_star.png
+const SHOOTSTAR_MAX_ACTIVE = 3; // cap simultaneous stars
 
 // ── Asteroids (Level 3 only) ─────────────────────────────────
 // Slow-drifting asteroid sprites in the background. Density increases
 // with altitude. They are background-only — no collision.
-const ASTEROID_COUNT = 14;           // total asteroids placed in level
-const ASTEROID_DRIFT_SPEED = 0.3;    // px/frame max drift
+const ASTEROID_COUNT = 14; // total asteroids placed in level
+const ASTEROID_DRIFT_SPEED = 0.3; // px/frame max drift
 const ASTEROID_ROTATE_SPEED = 0.008; // radians/frame rotation
 const ASTEROID_SCALE_MIN = 0.03;
 const ASTEROID_SCALE_MAX = 0.07;
@@ -294,5 +294,5 @@ const ASTEROID_SCALE_MAX = 0.07;
 // Static background planets placed at fixed y-positions in level space.
 const PLANET_SCALE_EARTH = 0.12;
 const PLANET_SCALE_SATURN = 0.14;
-const PLANET_SCALE_VENUS = 0.10;
+const PLANET_SCALE_VENUS = 0.1;
 const PLANET_SCALE_MERCURY = 0.08;

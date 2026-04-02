@@ -100,18 +100,18 @@ let _shootingStars = [];
 let _shootStarTimer = 0;
 
 // ── Spaceship flyover ────────────────────────────────────────
-let _ship = null;          // { x, y, dir } while active; null = idle
-let _shipTimer = 0;        // countdown to next flyover
-let _shakeTimer = 0;       // remaining shake frames
+let _ship = null; // { x, y, dir } while active; null = idle
+let _shipTimer = 0; // countdown to next flyover
+let _shakeTimer = 0; // remaining shake frames
 let _shakeOffsetX = 0;
 let _shakeOffsetY = 0;
 
 // ── Planet positions (fixed in level-space, set once in initGame) ──
 const L3_PLANETS = [
-  { key: "earth",   x: 620, y: 3100, scale: 0.12 },
-  { key: "saturn",  x: 40,  y: 2100, scale: 0.14 },
-  { key: "venus",   x: 610, y: 1400, scale: 0.10 },
-  { key: "mercury", x: 80,  y: 750,  scale: 0.08 },
+  { key: "earth", x: 620, y: 3100, scale: 0.12 },
+  { key: "saturn", x: 40, y: 2100, scale: 0.14 },
+  { key: "venus", x: 610, y: 1400, scale: 0.1 },
+  { key: "mercury", x: 80, y: 750, scale: 0.08 },
 ];
 
 function getWorldOffsetX() {
@@ -755,12 +755,15 @@ function _drawPlatforms(g) {
       g.fill(100, 40, 15);
       g.noStroke();
       g.rect(gp.x, gp.y, gp.w, gp.h);
-      // Overlay the mars_platform.png terrain image on top
-      const L3_X = gp.x - 50;
-      const L3_Y = gp.y - 500;
-      const L3_WIDTH = 900;
-      const L3_HEIGHT = 700;
-      g.image(imgGroundL3, L3_X, L3_Y, L3_WIDTH, L3_HEIGHT);
+      // Overlay the mars_platform.png terrain image, tiled at natural aspect ratio
+      const L3_Y = gp.y - 170;
+      const L3_HEIGHT = gp.h + 160;
+      const naturalW = imgGroundL3.width * (L3_HEIGHT / imgGroundL3.height);
+      let drawX = gp.x;
+      while (drawX < gp.x + gp.w) {
+        g.image(imgGroundL3, drawX, L3_Y, naturalW, L3_HEIGHT);
+        drawX += naturalW;
+      }
     } else if (currentLevel === 3) {
       // Fallback if image somehow failed to load
       g.fill(100, 40, 15);
@@ -831,7 +834,12 @@ function _drawPlatforms(g) {
 
     if (isPeak || (isZigzag && isNarrow)) {
       g.noFill();
-      let edgeCol = currentLevel === 3 ? [200, 100, 50] : currentLevel === 2 ? [80, 150, 215] : [215, 145, 55];
+      let edgeCol =
+        currentLevel === 3
+          ? [200, 100, 50]
+          : currentLevel === 2
+            ? [80, 150, 215]
+            : [215, 145, 55];
       g.stroke(edgeCol[0], edgeCol[1], edgeCol[2], 50);
       g.strokeWeight(1);
       g.rect(p.x, p.y, p.w, p.h, 3);
@@ -1071,7 +1079,11 @@ function drawUI() {
   }
 
   if (!_playerHasMoved && !winTriggered) {
-    fill(20, 20, 60, 200);
+    if (currentLevel === 3) {
+      fill(255, 255, 255, 200);
+    } else {
+      fill(20, 20, 60, 200);
+    }
     textAlign(CENTER, BOTTOM);
     textStyle(BOLD);
     textSize(13);
@@ -1246,7 +1258,7 @@ function _updateShootingStars() {
       maxLife: floor(random(60, 120)),
     });
     _shootStarTimer = floor(
-      random(SHOOTSTAR_INTERVAL_MIN, SHOOTSTAR_INTERVAL_MAX)
+      random(SHOOTSTAR_INTERVAL_MIN, SHOOTSTAR_INTERVAL_MAX),
     );
   }
 
