@@ -1,4 +1,4 @@
-# Project Title
+# Project Title (Multiple Sclerosis Game)
 
 Assignment 3: Final Game (Group Project)
 
