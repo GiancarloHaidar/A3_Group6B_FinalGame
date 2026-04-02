@@ -10,8 +10,6 @@ let cam;
 let levelData;
 
 // ── Level management ──────────────────────────────────────────
-// Change this to 2 (or pass via query param) to start on level 2.
-// After completing Level 1 the game auto-advances to Level 2.
 let currentLevel = 1;
 let level1Data = null;
 let level2Data = null;
@@ -23,7 +21,7 @@ let _starAwardedThisWin = false;
 let _starAnimTimer = 0;
 const STAR_ANIM_DURATION = 40;
 
-// ── One-shot music-stop flags (prevent _stopMusic re-firing every frame) ──
+// ── One-shot music-stop flags ──────────────────────────────────
 let _winMusicStopped = false;
 let _loseMusicStopped = false;
 
@@ -32,6 +30,10 @@ let _introVideo = null;
 let _continueBtnHandler = null;
 
 // ── World graphics buffer ─────────────────────────────────────
+// FIX: Buffer is PLAY_WIDTH (800px) wide, NOT windowWidth.
+// The blur filter and all world drawing only ever touch 800×screenHeight
+// pixels regardless of monitor size. On a 4K HDMI display this cuts
+// GPU compositing cost by ~5× compared to a full-resolution buffer.
 let _worldBuffer = null;
 
 // ── Blur state machine ────────────────────────────────────────
@@ -81,7 +83,6 @@ function preload() {
   speakingSound = loadSound("Assets/Speaking.mp3");
   bgMusic2 = loadSound("Assets/Background2.mp3");
 
-  // All images loaded in preload to guarantee availability
   imgHouse = loadImage("Assets/house.png");
   imgTree = loadImage("Assets/tree.png");
   imgAstronaut = loadImage("Assets/astronaut.png");
@@ -162,8 +163,6 @@ function _playIntroVideo() {
   if (bgMusic && !bgMusic.isPlaying()) bgMusic.loop();
 }
 
-// Removes any previously registered #continueBtn handler before adding the new
-// one. Prevents stale listeners from prior video flows firing unexpectedly.
 function _setContinueBtnHandler(fn) {
   const btn = document.getElementById("continueBtn");
   if (_continueBtnHandler) {
@@ -256,11 +255,8 @@ function _onScene2Continued() {
 }
 
 // ── Level 2 transition video ──────────────────────────────────
-// Plays Assets/Level2Video.mp4 when the player selects Level 2.
-// Both speakingSound and bgMusic2 start together when the video begins.
 
 function _playLevel2Video() {
-  // Black backdrop so the canvas doesn't bleed through behind the video
   let backdrop = document.getElementById("videoBackdrop");
   if (!backdrop) {
     backdrop = document.createElement("div");
@@ -293,7 +289,6 @@ function _playLevel2Video() {
     _onLevel2VideoEnded();
   });
 
-  // Start speaking and background music 2 together when the video begins
   if (speakingSound && speakingSound.isLoaded()) speakingSound.play();
   if (bgMusic && bgMusic.isPlaying()) bgMusic.stop();
   if (bgMusic2 && bgMusic2.isLoaded() && !bgMusic2.isPlaying()) bgMusic2.loop();
@@ -315,7 +310,6 @@ function _onLevel2VideoContinued() {
     _introVideo.style.display = "none";
     _introVideo = null;
   }
-  // Remove the black backdrop now that we're entering the game
   let backdrop = document.getElementById("videoBackdrop");
   if (backdrop) backdrop.style.display = "none";
   _starAwardedThisWin = false;
@@ -323,15 +317,11 @@ function _onLevel2VideoContinued() {
   currentScreen = "game";
   initGame();
   _initBlur();
-  // Stop speaking audio now that we're entering gameplay
   if (speakingSound && speakingSound.isPlaying()) speakingSound.stop();
-  // bgMusic2 is already looping — started when the video began
   if (bgMusic && bgMusic.isPlaying()) bgMusic.stop();
 }
 
 // ── Level 3 transition video ──────────────────────────────────
-// Reuses the same pattern as Level 2 video transitions.
-// bgMusic2 continues into Level 3 (same space soundtrack).
 
 function _playLevel3Video() {
   let backdrop = document.getElementById("videoBackdrop");
@@ -346,8 +336,6 @@ function _playLevel3Video() {
 
   _introVideo = document.getElementById("introVideo");
 
-  // Re-use the Level 2 video for the Level 3 transition.
-  // Replace with a dedicated Level3Video.mp4 if one is created later.
   _introVideo.src = "Assets/Before_Level_3_Dialogue_Vid.mp4";
   _introVideo.muted = true;
 
@@ -369,7 +357,6 @@ function _playLevel3Video() {
   });
 
   if (speakingSound && speakingSound.isLoaded()) speakingSound.play();
-  // Level 3 uses Level 1 music
   if (bgMusic2 && bgMusic2.isPlaying()) bgMusic2.stop();
   if (bgMusic && bgMusic.isLoaded() && !bgMusic.isPlaying()) bgMusic.loop();
 }
@@ -398,12 +385,10 @@ function _onLevel3VideoContinued() {
   initGame();
   _initBlur();
   if (speakingSound && speakingSound.isPlaying()) speakingSound.stop();
-  // _syncMusic starts both bgMusic + bgMusic2 for Level 3
   _syncMusic();
 }
 
-// ── Final closing clip (after Level 3 win) ────────────────────
-// Plays the final video, then auto-restarts the game from Level 1.
+// ── Final closing clip ────────────────────────────────────────
 
 function _playFinalClip() {
   _stopMusic();
@@ -439,7 +424,6 @@ function _playFinalClip() {
     _onFinalClipEnded();
   });
 
-  // Play Speaking.mp3 for 3 seconds at the start of the clip
   if (speakingSound && speakingSound.isLoaded()) {
     speakingSound.play();
     setTimeout(function () {
@@ -447,7 +431,6 @@ function _playFinalClip() {
     }, 3000);
   }
 
-  // Start Level 1 music in the background
   if (bgMusic && bgMusic.isLoaded() && !bgMusic.isPlaying()) {
     bgMusic.loop();
   }
@@ -462,7 +445,6 @@ function _onFinalClipEnded() {
   let backdrop = document.getElementById("videoBackdrop");
   if (backdrop) backdrop.style.display = "none";
 
-  // Full game reset — back to "Click to Start" screen
   _stopMusic();
   _totalStars = 0;
   _starAwardedThisWin = false;
@@ -474,7 +456,6 @@ function _onFinalClipEnded() {
   initGame();
   _initBlur();
 
-  // Show the "Click to Start" overlay again
   const overlay = document.getElementById("startOverlay");
   if (overlay) {
     overlay.style.display = "flex";
@@ -563,19 +544,21 @@ function _updateBlur() {
   }
 }
 
+// FIX: Stamp the narrow buffer (PLAY_WIDTH wide) at the horizontal
+// offset so it lands centred on the main canvas.
+// The buffer is no longer windowWidth wide, so the blur filter only
+// processes the 800px game column, not the full monitor resolution.
 function stampWorldBuffer() {
+  let ox = (width - PLAY_WIDTH) / 2;
   let ctx = drawingContext;
   if (_blurRadius > 0.05) {
     ctx.filter = "blur(" + _blurRadius.toFixed(2) + "px)";
   }
-  image(_worldBuffer, 0, 0);
+  image(_worldBuffer, ox, 0);
   ctx.filter = "none";
 }
 
-// ── Vignette overlay (Level 2 only) ──────────────────────────
-// Drawn after the world buffer stamp, before the UI, so the energy
-// bar and altitude indicators are never darkened.
-// Uses Canvas 2D radial gradient — same approach as the blur system.
+// ── Vignette overlay (Level 2 & 3) ───────────────────────────
 function _drawVignette() {
   if (currentLevel !== 2 && currentLevel !== 3) return;
 
@@ -583,12 +566,10 @@ function _drawVignette() {
 
   let edgeAlpha = VIGNETTE_ALPHA_BASE + VIGNETTE_ALPHA_FATIGUE * fatigueT;
 
-  // Half-diagonal of the canvas — the gradient outer radius.
   let halfDiag = sqrt(width * width + height * height) * 0.5;
   let cx = width / 2;
   let cy = height / 2;
 
-  // Inner clear radius shrinks slightly as fatigue grows.
   let innerFrac = VIGNETTE_INNER_RADIUS - VIGNETTE_FATIGUE_SHRINK * fatigueT;
   let innerR = halfDiag * innerFrac;
 
@@ -607,9 +588,16 @@ function _drawVignette() {
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  _worldBuffer = createGraphics(windowWidth, windowHeight);
 
-  // Default to level 1 data so initGame() has something to work with.
+  // FIX: Buffer is PLAY_WIDTH wide (800px), not windowWidth.
+  // Blur filter and world drawing cost is now constant regardless of
+  // monitor resolution — connecting a 4K HDMI display no longer lags.
+  _worldBuffer = createGraphics(PLAY_WIDTH, windowHeight);
+
+  // Lock to 60 fps so all frame-counted timers, physics, and wobble
+  // run at the intended speed on any monitor refresh rate.
+  frameRate(60);
+
   _loadLevel(1);
   initGame();
   _initBlur();
@@ -627,19 +615,16 @@ function setup() {
 }
 
 // ── Music helpers ─────────────────────────────────────────────
-// Level 1 & 3: bgMusic. Level 2: bgMusic2.
 function _syncMusic() {
   if (currentLevel === 2) {
     if (bgMusic.isPlaying()) bgMusic.stop();
     if (!bgMusic2.isPlaying()) bgMusic2.loop();
   } else {
-    // Level 1 and Level 3 both use bgMusic
     if (bgMusic2.isPlaying()) bgMusic2.stop();
     if (!bgMusic.isPlaying()) bgMusic.loop();
   }
 }
 
-// Stop whichever track is currently playing (used on win / lose).
 function _stopMusic() {
   if (bgMusic.isPlaying()) bgMusic.stop();
   if (bgMusic2.isPlaying()) bgMusic2.stop();
@@ -659,7 +644,6 @@ function draw() {
       break;
     case "win":
       if (!_starAwardedThisWin) {
-        // Stop music exactly once when the win screen first appears
         if (!_winMusicStopped) {
           _stopMusic();
           _winMusicStopped = true;
@@ -667,12 +651,17 @@ function draw() {
         _totalStars++;
         _starAwardedThisWin = true;
         _starAnimTimer = 0;
+
+        if (currentLevel === 3) {
+          _playFinalClip();
+          currentScreen = "finalclip";
+          return;
+        }
       }
       _starAnimTimer++;
       drawWinScreen();
       break;
     case "lose":
-      // Stop music exactly once when the lose screen first appears
       if (!_loseMusicStopped) {
         _stopMusic();
         _loseMusicStopped = true;
@@ -680,7 +669,6 @@ function draw() {
       drawLoseScreen();
       break;
     case "finalclip":
-      // Final video is playing via DOM — just draw black behind it
       background(0);
       break;
   }
@@ -725,7 +713,7 @@ function drawWinScreen() {
       ? "You reached the top of Level 1."
       : currentLevel === 2
         ? "You escaped into deep space."
-        : "You escaped Mars and reached the stars!";
+        : "You conquered Mars and beyond.";
   text(winMsg, ox + PLAY_WIDTH / 2, height / 2 - 20);
 
   _drawStarReward(ox);
@@ -748,14 +736,9 @@ function drawWinScreen() {
       );
     } else {
       text(
-        "Press R to play again  |  Press ENTER to watch ending",
+        "Press R to climb again  |  Press 1 for Level 1",
         ox + PLAY_WIDTH / 2,
-        height / 2 + 110,
-      );
-      text(
-        "Press 1 to restart from Level 1",
-        ox + PLAY_WIDTH / 2,
-        height / 2 + 135,
+        height / 2 + 120,
       );
     }
   }
@@ -884,7 +867,6 @@ function keyPressed() {
   if (currentScreen === "game") {
     gameKeyPressed(keyCode);
 
-    // TEMP: press T to cycle to next level for testing
     if (key === "t" || key === "T") {
       _stopMusic();
       if (currentLevel === 1) _playLevel2Video();
@@ -900,7 +882,6 @@ function keyPressed() {
 
   if (currentScreen === "win" || currentScreen === "lose") {
     if (key === "r" || key === "R") {
-      // Replay the same level — reset one-shot flags before re-entering game
       _winMusicStopped = false;
       _loseMusicStopped = false;
       _starAwardedThisWin = false;
@@ -909,14 +890,6 @@ function keyPressed() {
       _initBlur();
       _syncMusic();
     }
-    // Level 3 win: Enter key plays the final closing clip
-    if (currentScreen === "win" && currentLevel === 3 && keyCode === ENTER) {
-      _winMusicStopped = false;
-      _playFinalClip();
-      currentScreen = "finalclip";
-      return;
-    }
-    // Level select from win/lose screen
     if (key === "1") {
       _winMusicStopped = false;
       _loseMusicStopped = false;
@@ -952,7 +925,12 @@ function keyReleased() {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+  // FIX: Only height changes on resize — width stays PLAY_WIDTH (800px).
   if (_worldBuffer) {
-    _worldBuffer.resizeCanvas(windowWidth, windowHeight);
+    _worldBuffer.resizeCanvas(PLAY_WIDTH, windowHeight);
+  }
+  // Re-clamp camera so there's no one-frame pop when screen height changes.
+  if (cam && player) {
+    cam.y = constrain(cam.y, 0, max(0, LEVEL_HEIGHT - height));
   }
 }

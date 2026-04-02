@@ -325,8 +325,10 @@ function drawGame() {
   g.rect(0, 0, g.width, g.height);
 
   g.push();
-  // Apply screen shake offset (Level 3 spaceship flyover)
-  g.translate(ox + _shakeOffsetX, _shakeOffsetY);
+  // FIX: ox removed here — the buffer is PLAY_WIDTH wide and its x=0
+  // IS the left edge of the game column. stampWorldBuffer() positions
+  // it on screen at the correct horizontal offset.
+  g.translate(_shakeOffsetX, _shakeOffsetY);
   g.translate(-cam.x, -cam.y);
   _drawColumnBackground(g);
   if (currentLevel === 1) {
@@ -755,15 +757,12 @@ function _drawPlatforms(g) {
       g.fill(100, 40, 15);
       g.noStroke();
       g.rect(gp.x, gp.y, gp.w, gp.h);
-      // Overlay the mars_platform.png terrain image, tiled at natural aspect ratio
-      const L3_Y = gp.y - 170;
-      const L3_HEIGHT = gp.h + 160;
-      const naturalW = imgGroundL3.width * (L3_HEIGHT / imgGroundL3.height);
-      let drawX = gp.x;
-      while (drawX < gp.x + gp.w) {
-        g.image(imgGroundL3, drawX, L3_Y, naturalW, L3_HEIGHT);
-        drawX += naturalW;
-      }
+      // Overlay the mars_platform.png terrain image on top
+      const L3_X = gp.x - 50;
+      const L3_Y = gp.y - 500;
+      const L3_WIDTH = 900;
+      const L3_HEIGHT = 700;
+      g.image(imgGroundL3, L3_X, L3_Y, L3_WIDTH, L3_HEIGHT);
     } else if (currentLevel === 3) {
       // Fallback if image somehow failed to load
       g.fill(100, 40, 15);
@@ -1079,11 +1078,7 @@ function drawUI() {
   }
 
   if (!_playerHasMoved && !winTriggered) {
-    if (currentLevel === 3) {
-      fill(255, 255, 255, 200);
-    } else {
-      fill(20, 20, 60, 200);
-    }
+    fill(20, 20, 60, 200);
     textAlign(CENTER, BOTTOM);
     textStyle(BOLD);
     textSize(13);
