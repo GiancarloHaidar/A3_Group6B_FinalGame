@@ -667,13 +667,6 @@ function draw() {
         _totalStars++;
         _starAwardedThisWin = true;
         _starAnimTimer = 0;
-
-        // Level 3 win → play the final closing clip, then auto-restart
-        if (currentLevel === 3) {
-          _playFinalClip();
-          currentScreen = "finalclip";
-          return;
-        }
       }
       _starAnimTimer++;
       drawWinScreen();
@@ -732,7 +725,7 @@ function drawWinScreen() {
       ? "You reached the top of Level 1."
       : currentLevel === 2
         ? "You escaped into deep space."
-        : "You conquered Mars and beyond.";
+        : "You escaped Mars and reached the stars!";
   text(winMsg, ox + PLAY_WIDTH / 2, height / 2 - 20);
 
   _drawStarReward(ox);
@@ -755,9 +748,14 @@ function drawWinScreen() {
       );
     } else {
       text(
-        "Press R to climb again  |  Press 1 for Level 1",
+        "Press R to play again  |  Press ENTER to watch ending",
         ox + PLAY_WIDTH / 2,
-        height / 2 + 120,
+        height / 2 + 110,
+      );
+      text(
+        "Press 1 to restart from Level 1",
+        ox + PLAY_WIDTH / 2,
+        height / 2 + 135,
       );
     }
   }
@@ -910,6 +908,13 @@ function keyPressed() {
       initGame();
       _initBlur();
       _syncMusic();
+    }
+    // Level 3 win: Enter key plays the final closing clip
+    if (currentScreen === "win" && currentLevel === 3 && keyCode === ENTER) {
+      _winMusicStopped = false;
+      _playFinalClip();
+      currentScreen = "finalclip";
+      return;
     }
     // Level select from win/lose screen
     if (key === "1") {
