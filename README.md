@@ -130,7 +130,7 @@ References
 
 [15] Alexander-7. n.d. Space ship for video game in pixel art style. Adobe Stock. [https://stock.adobe.com/ca/search?k=pixelated%2Bspace%2Bship&asset_id=356257839](https://stock.adobe.com/ca/search?k=pixelated%2Bspace%2Bship&asset_id=356257839). (Accessed: April 1, 2026).
 
-[16] Adobe Stock. n.d. Stars and Meteors. Adobe Stock. [https://stock.adobe.com/ca/search?k=pixelated%2Bspace%2Bship&asset_id=356257839](https://stock.adobe.com/ca/search?k=planets%25252Bpixelated&asset_id=1726024516). (Accessed: April 1, 2026).
+[16] Adobe. n.d. Stars and Meteors. Adobe Stock. [https://stock.adobe.com/ca/search?k=pixelated%2Bspace%2Bship&asset_id=356257839](https://stock.adobe.com/ca/search?k=planets%25252Bpixelated&asset_id=1726024516). (Accessed: April 1, 2026).
 
 [17] Google Gemini. 2026. Google. [https://gemini.google.com/share/e5d6e9a13df8](https://gemini.google.com/share/e5d6e9a13df8). (Accessed: April 1, 2026).
 
