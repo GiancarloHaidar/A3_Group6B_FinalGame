@@ -68,6 +68,7 @@ let failSound;
 let winSound;
 let speakingSound;
 let bgMusic2;
+let bgMusic3;
 
 function preload() {
   level1Data = loadJSON("level1.json");
@@ -82,6 +83,7 @@ function preload() {
   winSound = loadSound("Assets/Win.mp3");
   speakingSound = loadSound("Assets/Speaking.mp3");
   bgMusic2 = loadSound("Assets/Background2.mp3");
+  bgMusic3 = loadSound("Assets/Background3.mp3");
 
   imgHouse = loadImage("Assets/house.png");
   imgTree = loadImage("Assets/tree.png");
@@ -318,7 +320,7 @@ function _onLevel2VideoContinued() {
   initGame();
   _initBlur();
   if (speakingSound && speakingSound.isPlaying()) speakingSound.stop();
-  if (bgMusic && bgMusic.isPlaying()) bgMusic.stop();
+  _syncMusic();
 }
 
 // ── Level 3 transition video ──────────────────────────────────
@@ -357,8 +359,9 @@ function _playLevel3Video() {
   });
 
   if (speakingSound && speakingSound.isLoaded()) speakingSound.play();
+  if (bgMusic && bgMusic.isPlaying()) bgMusic.stop();
   if (bgMusic2 && bgMusic2.isPlaying()) bgMusic2.stop();
-  if (bgMusic && bgMusic.isLoaded() && !bgMusic.isPlaying()) bgMusic.loop();
+  if (bgMusic3 && bgMusic3.isLoaded() && !bgMusic3.isPlaying()) bgMusic3.loop();
 }
 
 function _onLevel3VideoEnded() {
@@ -604,6 +607,7 @@ function setup() {
 
   bgMusic.setVolume(0.4);
   bgMusic2.setVolume(0.4);
+  bgMusic3.setVolume(0.4);
   jumpSound.setVolume(0.6);
   landingSound.setVolume(0.5);
   lowEnergySound.setVolume(0.6);
@@ -615,12 +619,19 @@ function setup() {
 }
 
 // ── Music helpers ─────────────────────────────────────────────
+// Replace the whole function:
 function _syncMusic() {
   if (currentLevel === 2) {
     if (bgMusic.isPlaying()) bgMusic.stop();
+    if (bgMusic3.isPlaying()) bgMusic3.stop();
     if (!bgMusic2.isPlaying()) bgMusic2.loop();
+  } else if (currentLevel === 3) {
+    if (bgMusic.isPlaying()) bgMusic.stop();
+    if (bgMusic2.isPlaying()) bgMusic2.stop();
+    if (!bgMusic3.isPlaying()) bgMusic3.loop();
   } else {
     if (bgMusic2.isPlaying()) bgMusic2.stop();
+    if (bgMusic3.isPlaying()) bgMusic3.stop();
     if (!bgMusic.isPlaying()) bgMusic.loop();
   }
 }
@@ -628,6 +639,7 @@ function _syncMusic() {
 function _stopMusic() {
   if (bgMusic.isPlaying()) bgMusic.stop();
   if (bgMusic2.isPlaying()) bgMusic2.stop();
+  if (bgMusic3.isPlaying()) bgMusic3.stop();
 }
 
 function draw() {
