@@ -84,6 +84,8 @@ Winning: https://pixabay.com/sound-effects/film-special-effects-winning-82808/
 
 Speaking: https://pixabay.com/sound-effects/film-special-effects-little-robot-sound-84657/
 
+SapceShip: https://pixabay.com/sound-effects/film-special-effects-alien-sound-effect-490857/
+
 ---
 
 # References
@@ -120,14 +122,16 @@ References
 
 [14] Timofey Khripachenko. 2024. A star field with many stars in the sky. Pexels. https://www.pexels.com/video/a-star-field-with-many-stars-in-the-sky-20556585/. Accessed: April 1, 2026.
 
-[15] Google Gemini. 2026. Google. https://gemini.google.com/share/b18bf4134ea2. Accessed: April 1, 2026.
+[15] Pixabay. 2025. Film special effects alien sound effect. Pixabay. https://pixabay.com/sound-effects/film-special-effects-alien-sound-effect-490857/
 
-[16] Alexander-7. n.d. Space ship for video game in pixel art style. Adobe Stock. https://stock.adobe.com/ca/search?k=pixelated%2Bspace%2Bship&asset_id=356257839. Accessed: April 1, 2026.
+[16] Google Gemini. 2026. Google. https://gemini.google.com/share/b18bf4134ea2. Accessed: April 1, 2026.
 
-[17] Adobe. n.d. Stars and Meteors. Adobe Stock. https://stock.adobe.com/ca/search?k=planets%25252Bpixelated&asset_id=1726024516. Accessed: April 1, 2026.
+[17] Alexander-7. n.d. Space ship for video game in pixel art style. Adobe Stock. https://stock.adobe.com/ca/search?k=pixelated%2Bspace%2Bship&asset_id=356257839. Accessed: April 1, 2026.
 
-[18] Google Gemini. 2026. Google. https://gemini.google.com/share/e5d6e9a13df8. Accessed: April 1, 2026.
+[18] Adobe. n.d. Stars and Meteors. Adobe Stock. https://stock.adobe.com/ca/search?k=planets%25252Bpixelated&asset_id=1726024516. Accessed: April 1, 2026.
 
-[19] Google Gemini. 2026. Google. https://gemini.google.com/share/b66454b410b9. Accessed: April 1, 2026.
+[19] Google Gemini. 2026. Google. https://gemini.google.com/share/e5d6e9a13df8. Accessed: April 1, 2026.
 
-[20] Google Gemini. 2026. Google. https://gemini.google.com/share/96ff1945b662. Accessed: April 1, 2026.
+[20] Google Gemini. 2026. Google. https://gemini.google.com/share/b66454b410b9. Accessed: April 1, 2026.
+
+[21] Google Gemini. 2026. Google. https://gemini.google.com/share/96ff1945b662. Accessed: April 1, 2026.
