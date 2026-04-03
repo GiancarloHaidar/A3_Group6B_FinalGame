@@ -45,7 +45,7 @@ Change 2: Additionally, Level 3 had to introduce three new game mechanics for de
 
 - Platforms move more aggressively to challenge the player more.
 - Gravity is higher to give the player less predictable control.
-- Integrated the disorientation symptom by adding a spaceship that randomly flies across and shakes the screen 
+- Integrated the disorientation symptom by adding a spaceship that randomly flies across and shakes the screen
 
 These changes help players understand the narrative during the game's final stages.
 
@@ -69,7 +69,7 @@ Intro Video - made by Jayna on Capcut
 Speech Video - made by Jayna on Capcut
 
 Sounds:
-Music: https://pixabay.com/music/video-games-roblox-minecraft-fortnite-video-game-music-358426/
+Music: https://pixabay.com/music/video-games-roblox-minecraft-fortnite-video-game-music-358426/ + https://pixabay.com/music/video-games-gaming-game-minecraft-background-music-372242/
 
 Jump: https://pixabay.com/sound-effects/film-special-effects-cartoon-jump-6462/
 
@@ -116,16 +116,18 @@ References
 
 [12] Pixabay. 2023. Roblox Minecraft Fortnite video game music. Pixabay. https://pixabay.com/music/video-games-roblox-minecraft-fortnite-video-game-music-358426/
 
-[13] Timofey Khripachenko. 2024. A star field with many stars in the sky. Pexels. https://www.pexels.com/video/a-star-field-with-many-stars-in-the-sky-20556585/. Accessed: April 1, 2026.
+[13] Pixabay. 2025. Gaming Game Minecraft background music. Pixabay. https://pixabay.com/music/video-games-gaming-game-minecraft-background-music-372242/
 
-[14] Google Gemini. 2026. Google. https://gemini.google.com/share/b18bf4134ea2. Accessed: April 1, 2026.
+[14] Timofey Khripachenko. 2024. A star field with many stars in the sky. Pexels. https://www.pexels.com/video/a-star-field-with-many-stars-in-the-sky-20556585/. Accessed: April 1, 2026.
 
-[15] Alexander-7. n.d. Space ship for video game in pixel art style. Adobe Stock. https://stock.adobe.com/ca/search?k=pixelated%2Bspace%2Bship&asset_id=356257839. Accessed: April 1, 2026.
+[15] Google Gemini. 2026. Google. https://gemini.google.com/share/b18bf4134ea2. Accessed: April 1, 2026.
 
-[16] Adobe. n.d. Stars and Meteors. Adobe Stock. https://stock.adobe.com/ca/search?k=planets%25252Bpixelated&asset_id=1726024516. Accessed: April 1, 2026.
+[16] Alexander-7. n.d. Space ship for video game in pixel art style. Adobe Stock. https://stock.adobe.com/ca/search?k=pixelated%2Bspace%2Bship&asset_id=356257839. Accessed: April 1, 2026.
 
-[17] Google Gemini. 2026. Google. https://gemini.google.com/share/e5d6e9a13df8. Accessed: April 1, 2026.
+[17] Adobe. n.d. Stars and Meteors. Adobe Stock. https://stock.adobe.com/ca/search?k=planets%25252Bpixelated&asset_id=1726024516. Accessed: April 1, 2026.
 
-[18] Google Gemini. 2026. Google. https://gemini.google.com/share/b66454b410b9. Accessed: April 1, 2026.
+[18] Google Gemini. 2026. Google. https://gemini.google.com/share/e5d6e9a13df8. Accessed: April 1, 2026.
 
-[19] Google Gemini. 2026. Google. https://gemini.google.com/share/96ff1945b662. Accessed: April 1, 2026.
+[19] Google Gemini. 2026. Google. https://gemini.google.com/share/b66454b410b9. Accessed: April 1, 2026.
+
+[20] Google Gemini. 2026. Google. https://gemini.google.com/share/96ff1945b662. Accessed: April 1, 2026.
