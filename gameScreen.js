@@ -100,18 +100,18 @@ let _shootingStars = [];
 let _shootStarTimer = 0;
 
 // ── Spaceship flyover ────────────────────────────────────────
-let _ship = null;          // { x, y, dir } while active; null = idle
-let _shipTimer = 0;        // countdown to next flyover
-let _shakeTimer = 0;       // remaining shake frames
+let _ship = null; // { x, y, dir } while active; null = idle
+let _shipTimer = 0; // countdown to next flyover
+let _shakeTimer = 0; // remaining shake frames
 let _shakeOffsetX = 0;
 let _shakeOffsetY = 0;
 
 // ── Planet positions (fixed in level-space, set once in initGame) ──
 const L3_PLANETS = [
-  { key: "earth",   x: 620, y: 3100, scale: 0.12 },
-  { key: "saturn",  x: 40,  y: 2100, scale: 0.14 },
-  { key: "venus",   x: 610, y: 1400, scale: 0.10 },
-  { key: "mercury", x: 80,  y: 750,  scale: 0.08 },
+  { key: "earth", x: 620, y: 3100, scale: 0.12 },
+  { key: "saturn", x: 40, y: 2100, scale: 0.14 },
+  { key: "venus", x: 610, y: 1400, scale: 0.1 },
+  { key: "mercury", x: 80, y: 750, scale: 0.08 },
 ];
 
 function getWorldOffsetX() {
@@ -833,7 +833,12 @@ function _drawPlatforms(g) {
 
     if (isPeak || (isZigzag && isNarrow)) {
       g.noFill();
-      let edgeCol = currentLevel === 3 ? [200, 100, 50] : currentLevel === 2 ? [80, 150, 215] : [215, 145, 55];
+      let edgeCol =
+        currentLevel === 3
+          ? [200, 100, 50]
+          : currentLevel === 2
+            ? [80, 150, 215]
+            : [215, 145, 55];
       g.stroke(edgeCol[0], edgeCol[1], edgeCol[2], 50);
       g.strokeWeight(1);
       g.rect(p.x, p.y, p.w, p.h, 3);
@@ -1248,7 +1253,7 @@ function _updateShootingStars() {
       maxLife: floor(random(60, 120)),
     });
     _shootStarTimer = floor(
-      random(SHOOTSTAR_INTERVAL_MIN, SHOOTSTAR_INTERVAL_MAX)
+      random(SHOOTSTAR_INTERVAL_MIN, SHOOTSTAR_INTERVAL_MAX),
     );
   }
 
@@ -1310,6 +1315,9 @@ function _updateSpaceship() {
       _ship = { x: startX, y: yInScreen, dir: dir };
       _shakeTimer = 999; // active shake while ship is on screen
       _shipTimer = floor(random(SHIP_INTERVAL_MIN, SHIP_INTERVAL_MAX));
+      if (typeof spaceshipSound !== "undefined" && spaceshipSound.isLoaded()) {
+        spaceshipSound.play();
+      }
     }
   }
 }

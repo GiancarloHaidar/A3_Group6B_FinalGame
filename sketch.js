@@ -67,6 +67,7 @@ let fallingSound;
 let failSound;
 let winSound;
 let speakingSound;
+let spaceshipSound;
 let bgMusic2;
 let bgMusic3;
 
@@ -84,6 +85,7 @@ function preload() {
   speakingSound = loadSound("Assets/Speaking.mp3");
   bgMusic2 = loadSound("Assets/Background2.mp3");
   bgMusic3 = loadSound("Assets/Background3.mp3");
+  spaceshipSound = loadSound("Assets/Spaceship.mp3");
 
   imgHouse = loadImage("Assets/house.png");
   imgTree = loadImage("Assets/tree.png");
@@ -608,6 +610,7 @@ function setup() {
   bgMusic.setVolume(0.4);
   bgMusic2.setVolume(0.4);
   bgMusic3.setVolume(0.4);
+  spaceshipSound.setVolume(0.6);
   jumpSound.setVolume(0.6);
   landingSound.setVolume(0.5);
   lowEnergySound.setVolume(0.6);
