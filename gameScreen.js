@@ -758,10 +758,10 @@ function _drawPlatforms(g) {
       g.noStroke();
       g.rect(gp.x, gp.y, gp.w, gp.h);
       // Overlay the mars_platform.png terrain image on top
-      const L3_X = gp.x - 50;
-      const L3_Y = gp.y - 500;
-      const L3_WIDTH = 900;
-      const L3_HEIGHT = 700;
+      const L3_X = gp.x;
+      const L3_Y = gp.y - 320;
+      const L3_WIDTH = gp.w;
+      const L3_HEIGHT = 380;
       g.image(imgGroundL3, L3_X, L3_Y, L3_WIDTH, L3_HEIGHT);
     } else if (currentLevel === 3) {
       // Fallback if image somehow failed to load
@@ -1088,6 +1088,20 @@ function drawUI() {
       height - 20,
     );
   }
+
+  if (currentLevel === 3) {
+    fill(255, 255, 255, 200);
+  } else {
+    fill(20, 20, 60, 200);
+  }
+  textAlign(CENTER, BOTTOM);
+  textStyle(BOLD);
+  textSize(13);
+  text(
+    "A/D or ← → move   ↑/W/Space jump   ↓/S fast-fall",
+    ox + PLAY_WIDTH / 2,
+    height - 20,
+  );
 
   textAlign(LEFT, BASELINE);
 }
