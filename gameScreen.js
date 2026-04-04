@@ -1078,7 +1078,11 @@ function drawUI() {
   }
 
   if (!_playerHasMoved && !winTriggered) {
-    fill(20, 20, 60, 200);
+    if (currentLevel === 3) {
+      fill(255, 255, 255, 200);
+    } else {
+      fill(20, 20, 60, 200);
+    }
     textAlign(CENTER, BOTTOM);
     textStyle(BOLD);
     textSize(13);
@@ -1088,20 +1092,6 @@ function drawUI() {
       height - 20,
     );
   }
-
-  if (currentLevel === 3) {
-    fill(255, 255, 255, 200);
-  } else {
-    fill(20, 20, 60, 200);
-  }
-  textAlign(CENTER, BOTTOM);
-  textStyle(BOLD);
-  textSize(13);
-  text(
-    "A/D or ← → move   ↑/W/Space jump   ↓/S fast-fall",
-    ox + PLAY_WIDTH / 2,
-    height - 20,
-  );
 
   textAlign(LEFT, BASELINE);
 }
