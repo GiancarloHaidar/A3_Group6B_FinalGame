@@ -668,8 +668,7 @@ function draw() {
         _starAnimTimer = 0;
 
         if (currentLevel === 3) {
-          _playFinalClip();
-          currentScreen = "finalclip";
+          currentScreen = "congrats";
           return;
         }
       }
@@ -682,6 +681,9 @@ function draw() {
         _loseMusicStopped = true;
       }
       drawLoseScreen();
+      break;
+    case "congrats":
+      drawCongratsScreen();
       break;
     case "finalclip":
       background(0);
@@ -733,31 +735,215 @@ function drawWinScreen() {
 
   _drawStarReward(ox);
 
-  let blink = frameCount % 50 < 30;
-  if (blink) {
-    textSize(14);
-    fill(140, 190, 240);
-    if (currentLevel === 1) {
-      text(
-        "Press R to replay  |  Press 2 for Level 2",
-        ox + PLAY_WIDTH / 2,
-        height / 2 + 120,
-      );
-    } else if (currentLevel === 2) {
-      text(
-        "Press R to replay  |  Press 3 for Level 3",
-        ox + PLAY_WIDTH / 2,
-        height / 2 + 120,
-      );
-    } else {
-      text(
-        "Press R to climb again  |  Press 1 for Level 1",
-        ox + PLAY_WIDTH / 2,
-        height / 2 + 120,
-      );
+  _drawWinButtons(ox);
+  textAlign(LEFT, BASELINE);
+}
+
+// ── Win screen buttons (Levels 1 & 2) ────────────────────────
+function _drawWinButtons(ox) {
+  let cx = ox + PLAY_WIDTH / 2;
+  let by = height / 2 + 105;
+  let bw = 160,
+    bh = 40,
+    gap = 20;
+  let replayX = cx - bw - gap / 2;
+  let nextX = cx + gap / 2;
+
+  let nextLabel = currentLevel === 1 ? "▶ Level 2" : "▶ Level 3";
+
+  let overReplay =
+    mouseX >= replayX &&
+    mouseX <= replayX + bw &&
+    mouseY >= by &&
+    mouseY <= by + bh;
+  fill(overReplay ? color(140, 220, 255) : color(60, 130, 200));
+  stroke(180, 230, 255);
+  strokeWeight(1.5);
+  rect(replayX, by, bw, bh, 6);
+  noStroke();
+  fill(overReplay ? color(10, 20, 40) : color(220, 240, 255));
+  textAlign(CENTER, CENTER);
+  textSize(14);
+  textFont("monospace");
+  text("↺ Replay", replayX + bw / 2, by + bh / 2);
+
+  let overNext =
+    mouseX >= nextX &&
+    mouseX <= nextX + bw &&
+    mouseY >= by &&
+    mouseY <= by + bh;
+  fill(overNext ? color(140, 220, 255) : color(60, 130, 200));
+  stroke(180, 230, 255);
+  strokeWeight(1.5);
+  rect(nextX, by, bw, bh, 6);
+  noStroke();
+  fill(overNext ? color(10, 20, 40) : color(220, 240, 255));
+  text(nextLabel, nextX + bw / 2, by + bh / 2);
+}
+
+// ── Level 3 Congrats screen ───────────────────────────────────
+function drawCongratsScreen() {
+  let ox = (width - PLAY_WIDTH) / 2;
+  background(10, 11, 16);
+  fill(10, 11, 16);
+  noStroke();
+  rect(0, 0, width, height);
+
+  for (let i = 0; i < 8; i++) {
+    let t = i / 8;
+    fill(lerp(10, 5, t), lerp(30, 15, t), lerp(60, 35, t));
+    rect(ox, (i * height) / 8, PLAY_WIDTH, height / 8);
+  }
+
+  randomSeed(99);
+  for (let i = 0; i < 40; i++) {
+    let sx = ox + random(PLAY_WIDTH);
+    let sy = random(height);
+    let pulse = 0.5 + 0.5 * sin(frameCount * 0.05 + i);
+    fill(120, 220, 255, 80 + 120 * pulse);
+    noStroke();
+    drawWinStar(sx, sy, 3, 7, 5);
+  }
+
+  let bounce = sin(frameCount * 0.05) * 8;
+  fill(100, 200, 255);
+  noStroke();
+  textAlign(CENTER, CENTER);
+  textSize(48);
+  textFont("monospace");
+  text("Congrats!", ox + PLAY_WIDTH / 2, height / 2 - 110 + bounce);
+
+  textSize(18);
+  fill(180, 230, 255);
+  text("You conquered Mars and beyond.", ox + PLAY_WIDTH / 2, height / 2 - 50);
+
+  textFont("monospace");
+  textSize(13);
+  fill(180, 230, 255, 200);
+  text("ALL STARS COLLECTED", ox + PLAY_WIDTH / 2, height / 2 + 10);
+
+  let starSize = 28;
+  let starGap = 38;
+  let totalW = (3 - 1) * starGap;
+  let startX = ox + PLAY_WIDTH / 2 - totalW / 2;
+  for (let i = 0; i < 3; i++) {
+    let sx = startX + i * starGap;
+    let sy = height / 2 + 45;
+    noStroke();
+    fill(255, 218, 50);
+    _drawStarShape(sx, sy, starSize * 0.42, starSize * 0.9, 5);
+    fill(255, 255, 200, 160);
+    _drawStarShape(sx - 2, sy - 3, starSize * 0.18, starSize * 0.38, 5);
+  }
+
+  _drawCongratsButtons(ox);
+  textAlign(LEFT, BASELINE);
+}
+
+function _drawCongratsButtons(ox) {
+  let cx = ox + PLAY_WIDTH / 2;
+  let by = height / 2 + 105;
+  let bw = 160,
+    bh = 40,
+    gap = 20;
+  let replayX = cx - bw - gap / 2;
+  let creditsX = cx + gap / 2;
+
+  let overReplay =
+    mouseX >= replayX &&
+    mouseX <= replayX + bw &&
+    mouseY >= by &&
+    mouseY <= by + bh;
+  fill(overReplay ? color(140, 220, 255) : color(60, 130, 200));
+  stroke(180, 230, 255);
+  strokeWeight(1.5);
+  rect(replayX, by, bw, bh, 6);
+  noStroke();
+  fill(overReplay ? color(10, 20, 40) : color(220, 240, 255));
+  textAlign(CENTER, CENTER);
+  textSize(14);
+  textFont("monospace");
+  text("▶ Replay Level 3", replayX + bw / 2, by + bh / 2);
+
+  let overCredits =
+    mouseX >= creditsX &&
+    mouseX <= creditsX + bw &&
+    mouseY >= by &&
+    mouseY <= by + bh;
+  fill(overCredits ? color(140, 220, 255) : color(60, 130, 200));
+  stroke(180, 230, 255);
+  strokeWeight(1.5);
+  rect(creditsX, by, bw, bh, 6);
+  noStroke();
+  fill(overCredits ? color(10, 20, 40) : color(220, 240, 255));
+  text("★ End Credits", creditsX + bw / 2, by + bh / 2);
+}
+
+function mousePressed() {
+  let ox = (width - PLAY_WIDTH) / 2;
+  let cx = ox + PLAY_WIDTH / 2;
+  let by = height / 2 + 105;
+  let bw = 160,
+    bh = 40,
+    gap = 20;
+  let replayX = cx - bw - gap / 2;
+  let nextX = cx + gap / 2;
+
+  // ── Win screen buttons (Levels 1 & 2) ──────────────────────
+  if (currentScreen === "win") {
+    if (
+      mouseX >= replayX &&
+      mouseX <= replayX + bw &&
+      mouseY >= by &&
+      mouseY <= by + bh
+    ) {
+      _winMusicStopped = false;
+      _starAwardedThisWin = false;
+      currentScreen = "game";
+      initGame();
+      _initBlur();
+      _syncMusic();
+    }
+    if (
+      mouseX >= nextX &&
+      mouseX <= nextX + bw &&
+      mouseY >= by &&
+      mouseY <= by + bh
+    ) {
+      _winMusicStopped = false;
+      _starAwardedThisWin = false;
+      _stopMusic();
+      if (currentLevel === 1) _playLevel2Video();
+      else if (currentLevel === 2) _playLevel3Video();
     }
   }
-  textAlign(LEFT, BASELINE);
+
+  // ── Congrats screen buttons (Level 3) ──────────────────────
+  if (currentScreen === "congrats") {
+    if (
+      mouseX >= replayX &&
+      mouseX <= replayX + bw &&
+      mouseY >= by &&
+      mouseY <= by + bh
+    ) {
+      _winMusicStopped = false;
+      _starAwardedThisWin = false;
+      _loadLevel(3);
+      currentScreen = "game";
+      initGame();
+      _initBlur();
+      _syncMusic();
+    }
+    if (
+      mouseX >= nextX &&
+      mouseX <= nextX + bw &&
+      mouseY >= by &&
+      mouseY <= by + bh
+    ) {
+      _playFinalClip();
+      currentScreen = "finalclip";
+    }
+  }
 }
 
 // ── Star reward rendering ─────────────────────────────────────
@@ -895,7 +1081,11 @@ function keyPressed() {
     }
   }
 
-  if (currentScreen === "win" || currentScreen === "lose") {
+  if (
+    currentScreen === "win" ||
+    currentScreen === "lose" ||
+    currentScreen === "congrats"
+  ) {
     if (key === "r" || key === "R") {
       _winMusicStopped = false;
       _loseMusicStopped = false;
