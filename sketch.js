@@ -179,7 +179,7 @@ function _setContinueBtnHandler(fn) {
 function _onIntroEnded() {
   if (_introVideo) _introVideo.pause();
 
-  document.getElementById("continueBtnImg").src = "Assets/Continue.png";
+  document.getElementById("continueBtnImg").src = "Assets/StartButton.png";
   const btn = document.getElementById("continueBtn");
   btn.style.display = "flex";
   _setContinueBtnHandler(_onContinueClicked);
@@ -369,7 +369,7 @@ function _playLevel3Video() {
 function _onLevel3VideoEnded() {
   if (_introVideo) _introVideo.pause();
 
-  document.getElementById("continueBtnImg").src = "Assets/StartButton.png";
+  document.getElementById("continueBtnImg").src = "Assets/Continue.png";
   const btn = document.getElementById("continueBtn");
   btn.style.display = "flex";
   _setContinueBtnHandler(_onLevel3VideoContinued);
