@@ -549,12 +549,39 @@ function _updateBlur() {
   }
 }
 
+// ── Integer-scale helper ──────────────────────────────────────
+// Keeps pixel art crisp by:
+//   1. Snapping the game column's horizontal offset to a whole pixel,
+//      so the 800px worldBuffer never lands on a sub-pixel boundary.
+//      Without this, (windowWidth - 800) being odd places every sprite
+//      at a 0.5px offset, which softly blurs all pixel art edges.
+//   2. Setting image-rendering: pixelated on the canvas element so
+//      the browser uses nearest-neighbour compositing (no AA blur).
+//
+// Returns the integer-snapped ox value so stampWorldBuffer uses it
+// consistently without recomputing.
+function applyIntegerScale() {
+  // floor() guarantees the column offset is always a whole CSS pixel.
+  let ox = floor((windowWidth - PLAY_WIDTH) / 2);
+
+  // Nearest-neighbour rendering: prevents any browser-level
+  // anti-aliasing on top of what p5 already drew to the canvas.
+  let cnv = document.querySelector("canvas");
+  if (cnv) {
+    cnv.style.imageRendering = "pixelated";
+  }
+
+  return ox;
+}
+
 // FIX: Stamp the narrow buffer (PLAY_WIDTH wide) at the horizontal
 // offset so it lands centred on the main canvas.
 // The buffer is no longer windowWidth wide, so the blur filter only
 // processes the 800px game column, not the full monitor resolution.
+// floor() on ox ensures the buffer always lands on a whole pixel —
+// prevents sub-pixel placement from softly blurring all sprite edges.
 function stampWorldBuffer() {
-  let ox = (width - PLAY_WIDTH) / 2;
+  let ox = floor((width - PLAY_WIDTH) / 2);
   let ctx = drawingContext;
   if (_blurRadius > 0.05) {
     ctx.filter = "blur(" + _blurRadius.toFixed(2) + "px)";
@@ -592,6 +619,17 @@ function _drawVignette() {
 // ── p5 lifecycle ──────────────────────────────────────────────
 
 function setup() {
+  // ── HiDPI performance lock ────────────────────────────────────
+  // Without this, plugging into a 4K monitor makes the canvas 2–3×
+  // larger in actual pixels. The blur filter in stampWorldBuffer()
+  // then runs on a ~2400px buffer instead of 800px — that is where
+  // the lag spike on monitor plug-in comes from.
+  // pixelDensity(1) locks canvas pixels to CSS pixels, keeping the
+  // buffer cost constant regardless of devicePixelRatio.
+  // Must be called BEFORE createCanvas so the backing store is
+  // allocated at the correct size from the very first frame.
+  pixelDensity(1);
+
   createCanvas(windowWidth, windowHeight);
 
   // FIX: Buffer is PLAY_WIDTH wide (800px), not windowWidth.
@@ -618,11 +656,14 @@ function setup() {
   failSound.setVolume(0.6);
   winSound.setVolume(0.6);
 
+  // Snap column offset to integer pixels and apply nearest-neighbour
+  // CSS rendering on first load.
+  applyIntegerScale();
+
   _startIntro();
 }
 
 // ── Music helpers ─────────────────────────────────────────────
-// Replace the whole function:
 function _syncMusic() {
   if (currentLevel === 2) {
     if (bgMusic.isPlaying()) bgMusic.stop();
@@ -1129,13 +1170,27 @@ function keyReleased() {
 }
 
 function windowResized() {
+  // Re-lock pixel density BEFORE resizing. Dragging the window from a
+  // standard monitor to a HiDPI one changes devicePixelRatio at runtime.
+  // p5 reads devicePixelRatio inside resizeCanvas(), so if pixelDensity(1)
+  // is not re-affirmed here first, the buffer silently inflates to 2–3×
+  // and the blur in stampWorldBuffer() lags again immediately.
+  pixelDensity(1);
+
   resizeCanvas(windowWidth, windowHeight);
+
   // FIX: Only height changes on resize — width stays PLAY_WIDTH (800px).
   if (_worldBuffer) {
     _worldBuffer.resizeCanvas(PLAY_WIDTH, windowHeight);
   }
+
   // Re-clamp camera so there's no one-frame pop when screen height changes.
   if (cam && player) {
     cam.y = constrain(cam.y, 0, max(0, LEVEL_HEIGHT - height));
   }
+
+  // Re-snap the column offset to a whole pixel after every resize and
+  // re-apply image-rendering: pixelated in case the browser recreated
+  // the canvas element during the resize event.
+  applyIntegerScale();
 }
