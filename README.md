@@ -19,7 +19,7 @@ Assignment 3: Final Game (Group Project)
 
 Challenges associated with MS through gameplay mechanics rather than direct instruction.
 
-Multiple Sclerosis is a neurological condition that affects communication between the brain and body, often causing symptoms such as fatigue, balance issues, vision problems, and coordination difficulties [1]. Our game translates aspects of these symptoms into interactive mechanics, so players experience these effects as they navigate the environment.
+Multiple Sclerosis is a neurological condition that affects communication between the brain and body, often causing symptoms such as fatigue, balance issues, vision problems, and coordination difficulties [3]. Our game translates aspects of these symptoms into interactive mechanics, so players experience these effects as they navigate the environment.
 
 The game consists of a platform-based level where players must jump between platforms and navigate obstacles to reach the end. Mechanics such as unstable movement, altered gravity, or visual distortion are used to represent how MS symptoms can affect movement and perception.
 
@@ -69,7 +69,7 @@ Intro Video - made by Jayna on Capcut
 Speech Video - made by Jayna on Capcut
 
 Sounds:
-Music: https://pixabay.com/music/video-games-roblox-minecraft-fortnite-video-game-music-358426/ + https://pixabay.com/music/video-games-gaming-game-minecraft-background-music-372242/
+Music: https://pixabay.com/music/video-games-roblox-minecraft-fortnite-video-game-music-358426/ + https://pixabay.com/music/video-games-gaming-game-minecraft-background-music-372242/ + https://pixabay.com/music/video-games-gaming-game-minecraft-background-music-372242/
 
 Jump: https://pixabay.com/sound-effects/film-special-effects-cartoon-jump-6462/
 
@@ -84,7 +84,7 @@ Winning: https://pixabay.com/sound-effects/film-special-effects-winning-82808/
 
 Speaking: https://pixabay.com/sound-effects/film-special-effects-little-robot-sound-84657/
 
-SapceShip: https://pixabay.com/sound-effects/film-special-effects-alien-sound-effect-490857/
+SpaceShip: https://pixabay.com/sound-effects/film-special-effects-alien-sound-effect-490857/
 
 ---
 
@@ -94,44 +94,46 @@ SapceShip: https://pixabay.com/sound-effects/film-special-effects-alien-sound-ef
 
 References
 
-[1] Calgary MS Program – Allied Health. 2023. What is multiple sclerosis (MS) fatigue? MyHealth.Alberta.ca. https://myhealth.alberta.ca/Alberta/Pages/multiple-sclerosis-fatigue.aspx
+[1] Adobe. n.d. Stars and Meteors. Adobe Stock. https://stock.adobe.com/ca/search?k=planets%25252Bpixelated&asset_id=1726024516. Accessed: April 1, 2026.
 
-[2] Mayo Clinic Staff. 2024. Multiple sclerosis. Mayo Clinic. https://www.mayoclinic.org/diseases-conditions/multiple-sclerosis/symptoms-causes/syc-20350269
+[2] Alexander-7. n.d. Space ship for video game in pixel art style. Adobe Stock. https://stock.adobe.com/ca/search?k=pixelated%2Bspace%2Bship&asset_id=356257839. Accessed: April 1, 2026.
 
-[3] MS Society. 2023. MS eye and vision problems. MS Society. https://www.mssociety.org.uk/about-ms/signs-and-symptoms/eyes-and-sight
+[3] Calgary MS Program – Allied Health. 2023. What is multiple sclerosis (MS) fatigue? MyHealth.Alberta.ca. https://myhealth.alberta.ca/Alberta/Pages/multiple-sclerosis-fatigue.aspx
 
-[4] National Multiple Sclerosis Society. n.d. Vertigo and dizziness with MS. National Multiple Sclerosis Society. https://www.nationalmssociety.org/understanding-ms/what-is-ms/ms-symptoms/vertigo-dizziness
+[4] Google Gemini. 2026. Google. https://gemini.google.com/share/b18bf4134ea2. Accessed: April 1, 2026.
 
-[5] Pixabay. 2023. Cartoon jump (film special effect). Pixabay. https://pixabay.com/sound-effects/film-special-effects-cartoon-jump-6462/
+[5] Google Gemini. 2026. Google. https://gemini.google.com/share/e5d6e9a13df8. Accessed: April 1, 2026.
 
-[6] Pixabay. 2023. Factory alarm (film special effect). Pixabay. https://pixabay.com/sound-effects/film-special-effects-factory-alarm-95712/
+[6] Google Gemini. 2026. Google. https://gemini.google.com/share/b66454b410b9. Accessed: April 1, 2026.
 
-[7] Pixabay. 2023. Little robot sound (film special effect). Pixabay. https://pixabay.com/sound-effects/film-special-effects-little-robot-sound-84657/
+[7] Google Gemini. 2026. Google. https://gemini.google.com/share/96ff1945b662. Accessed: April 1, 2026.
 
-[8] Pixabay. 2023. Spin fail (film special effect). Pixabay. https://pixabay.com/sound-effects/film-special-effects-spin-fail-295088/
+[8] Mayo Clinic Staff. 2024. Multiple sclerosis. Mayo Clinic. https://www.mayoclinic.org/diseases-conditions/multiple-sclerosis/symptoms-causes/syc-20350269
 
-[9] Pixabay. 2023. Walk on grass 1 (film special effect). Pixabay. https://pixabay.com/sound-effects/film-special-effects-walk-on-grass-1-291984/
+[9] MS Society. 2023. MS eye and vision problems. MS Society. https://www.mssociety.org.uk/about-ms/signs-and-symptoms/eyes-and-sight
 
-[10] Pixabay. 2023. Whistle slide down 03 (film special effect). Pixabay. https://pixabay.com/sound-effects/film-special-effects-whistle-slide-down-03-352451/
+[10] National Multiple Sclerosis Society. n.d. Vertigo and dizziness with MS. National Multiple Sclerosis Society. https://www.nationalmssociety.org/understanding-ms/what-is-ms/ms-symptoms/vertigo-dizziness
 
-[11] Pixabay. 2023. Winning (film special effect). Pixabay. https://pixabay.com/sound-effects/film-special-effects-winning-82808/
+[11] Pixabay. 2023. Cartoon jump (film special effect). Pixabay. https://pixabay.com/sound-effects/film-special-effects-cartoon-jump-6462/
 
-[12] Pixabay. 2023. Roblox Minecraft Fortnite video game music. Pixabay. https://pixabay.com/music/video-games-roblox-minecraft-fortnite-video-game-music-358426/
+[12] Pixabay. 2023. Factory alarm (film special effect). Pixabay. https://pixabay.com/sound-effects/film-special-effects-factory-alarm-95712/
 
-[13] Pixabay. 2025. Gaming Game Minecraft background music. Pixabay. https://pixabay.com/music/video-games-gaming-game-minecraft-background-music-372242/
+[13] Pixabay. 2023. Little robot sound (film special effect). Pixabay. https://pixabay.com/sound-effects/film-special-effects-little-robot-sound-84657/
 
-[14] Timofey Khripachenko. 2024. A star field with many stars in the sky. Pexels. https://www.pexels.com/video/a-star-field-with-many-stars-in-the-sky-20556585/. Accessed: April 1, 2026.
+[14] Pixabay. 2023. Spin fail (film special effect). Pixabay. https://pixabay.com/sound-effects/film-special-effects-spin-fail-295088/
 
-[15] Pixabay. 2025. Film special effects alien sound effect. Pixabay. https://pixabay.com/sound-effects/film-special-effects-alien-sound-effect-490857/
+[15] Pixabay. 2023. Walk on grass 1 (film special effect). Pixabay. https://pixabay.com/sound-effects/film-special-effects-walk-on-grass-1-291984/
 
-[16] Google Gemini. 2026. Google. https://gemini.google.com/share/b18bf4134ea2. Accessed: April 1, 2026.
+[16] Pixabay. 2023. Whistle slide down 03 (film special effect). Pixabay. https://pixabay.com/sound-effects/film-special-effects-whistle-slide-down-03-352451/
 
-[17] Alexander-7. n.d. Space ship for video game in pixel art style. Adobe Stock. https://stock.adobe.com/ca/search?k=pixelated%2Bspace%2Bship&asset_id=356257839. Accessed: April 1, 2026.
+[17] Pixabay. 2023. Winning (film special effect). Pixabay. https://pixabay.com/sound-effects/film-special-effects-winning-82808/
 
-[18] Adobe. n.d. Stars and Meteors. Adobe Stock. https://stock.adobe.com/ca/search?k=planets%25252Bpixelated&asset_id=1726024516. Accessed: April 1, 2026.
+[18] Pixabay. 2023. Roblox Minecraft Fortnite video game music. Pixabay. https://pixabay.com/music/video-games-roblox-minecraft-fortnite-video-game-music-358426/
 
-[19] Google Gemini. 2026. Google. https://gemini.google.com/share/e5d6e9a13df8. Accessed: April 1, 2026.
+[19] Pixabay. 2025. Gaming Game Minecraft background music. Pixabay. https://pixabay.com/music/video-games-gaming-game-minecraft-background-music-372242/
 
-[20] Google Gemini. 2026. Google. https://gemini.google.com/share/b66454b410b9. Accessed: April 1, 2026.
+[20] Pixabay. 2025. Film special effects alien sound effect. Pixabay. https://pixabay.com/sound-effects/film-special-effects-alien-sound-effect-490857/
 
-[21] Google Gemini. 2026. Google. https://gemini.google.com/share/96ff1945b662. Accessed: April 1, 2026.
+[21] Pixabay. 2025. Gaming Game Minecraft Background Music. Pixabay. https://pixabay.com/music/video-games-gaming-game-minecraft-background-music-372242/
+
+[22] Timofey Khripachenko. 2024. A star field with many stars in the sky. Pexels. https://www.pexels.com/video/a-star-field-with-many-stars-in-the-sky-20556585/. Accessed: April 1, 2026.
