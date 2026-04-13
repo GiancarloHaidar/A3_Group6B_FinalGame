@@ -1001,16 +1001,16 @@ function _drawStarReward(ox) {
   text(starLabel, centerX, centerY - 28);
 
   let animT = constrain(_starAnimTimer / STAR_ANIM_DURATION, 0, 1);
-
+  let starsToShow = min(_totalStars, currentLevel);
   let starSize = 28;
   let starGap = 38;
-  let totalW = (_totalStars - 1) * starGap;
+  let totalW = (starsToShow - 1) * starGap;
   let startX = centerX - totalW / 2;
 
-  for (let i = 0; i < _totalStars; i++) {
+  for (let i = 0; i < starsToShow; i++) {
     let sx = startX + i * starGap;
     let sy = centerY + 8;
-    let isNewest = i === _totalStars - 1;
+    let isNewest = i === starsToShow - 1;
 
     let s = isNewest ? max(0.01, _easeOutBack(animT)) : 1.0;
 
